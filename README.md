@@ -1,8 +1,8 @@
-### ECOMMERCE2  :baby_chick:
+### ECOMMERCE2 :baby_chick:
 
 ##### REPEATING the ecommerce project i started 2 days ago
 
-######  Here i am not going to explain the set up of the server, as i already did inside the ecommerce1:
+###### Here i am not going to explain the set up of the server, as i already did inside the ecommerce1:
 
 [mern-ecommerce1](https://github.com/nadiamariduena/mongo-28-dci/tree/master/personal-lessons-tutorials/mern-ecommerce1)
 
@@ -32,7 +32,34 @@ MONGO_DB_DATABASE = tomatoes;
 - Since i am after all starting another ecommerce app with the same info
   i should always change this, and of course for that i have to create a new database name inside the mongo atlas ,like so:
 
+<br>
+<br>
+<br>
+
 #### ISSUE no.2
+
+###### I did a mistake with the second test as i didnt hide the .env correctly so i prefered to delete the whole repo. When adding the 3 repo, i got this ERROR.
+
+![rested](./src/img/issue2_authentication.jpg)
+
+<br>
+<br>
+
+- So i changed the port but the error persisted.
+
+- Then i changed the password but the error persisted.
+
+- Then i realized that the structure of the data in the ".env" wasnt like in the original ecommerce1 , because while changing the password i messed it a bit, so after i reorganize it, ichanged the password again inside the Atlas.
+
+- Then i killed the server and restarted it again.
+
+- It worked!
+
+<br>
+<br>
+<br>
+
+#### ISSUE no.3
 
 - After you set up the POST and you go to the
   POSTMAN to test it, you will notice that it will not work
