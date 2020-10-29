@@ -638,3 +638,11 @@ MONGO_DB_DATABASE = tomatoes;
 ```
 
 ### Now you can test in POSTMAN
+
+![rested](./src/img/result_after_changing_DB.jpg)
+
+- After you type the data on the top of the image, the result will be shown on the bottom.
+
+- from the moment you do that, you cannot click SEND again as it will say that the data you are trying to enter already exists, that data is now stored here:
+
+![rested](./src/img/result-after-changing-db-name.png)
