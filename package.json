@@ -1,0 +1,28 @@
+{
+  "name": "ecommerce2_mern",
+  "version": "1.0.0",
+  "description": "##### REPEATING the ecommerce project i started 2 days ago",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./src/index.server.js",
+    "killnode": "lsof -ti :5000 | xargs kill "
+  },
+  "keywords": [
+    "ecommerce",
+    "mern",
+    "project",
+    "backend",
+    "api"
+  ],
+  "author": "nadia mariduena",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.6.1",
+    "mongoose": "^5.10.10",
+    "nodemon": "^2.0.6"
+  }
+}
