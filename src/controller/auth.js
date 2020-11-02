@@ -1,28 +1,9 @@
-const express = require("express");
-const router = express.Router();
+// IMPORTS from the schema inside the MODELS
 const User = require("../models/user");
 
-//
-// the ROUTES are the box receiver of the MODELS data schemas
-//
-//
-router.get("/signin", (req, res, next) => {});
-
-/* 
-
-
-
-*/
-
-router.post("/signup", (req, res, next) => {
-  // the User with the SCHEMA data
+// here you dont need NEXT because you are not passing a request
+exports.signup = (req, res) => {
   User.findOne({
-    /*  if inside the req.body which is the 
-    data that the user is sending using the structure inside the schema
-    , if in that data there's a similar email,
-    then send an error.
-
-    */
     email: req.body.email,
   }).exec((error, user) => {
     if (user)
@@ -61,14 +42,12 @@ router.post("/signup", (req, res, next) => {
       // IF SUCCESS , SAVE the data
       if (data) {
         return res.status(201).json({
-          user: data,
+          message: "User created Successfully",
         });
       }
     });
   });
-});
-
-module.exports = router;
+};
 
 /*
                 400 Bad Request response status code indicates that 

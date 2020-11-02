@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["user", "admin"], //options
-      default: "admin", //here you setting up what the user's role will be
+      default: "user", //here you setting up what the user's role will be
     },
     contactNumber: {
       type: String,
@@ -70,6 +70,11 @@ const userSchema = new mongoose.Schema(
 // --------------------------------------------------------
 userSchema.virtual("password").set(function (password) {
   this.hash_password = bcrypt.hashSync(password, 10);
+
+  //
+  // this correspond to the salt: ...ord, 10);
+  // you are giving it a value from 1 to 10
+  // SALT : it serves merely to prevent two users with the same password getting the same hash.
 });
 // ------------
 // methods

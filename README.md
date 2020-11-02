@@ -529,6 +529,10 @@ const userSchema = new mongoose.Schema(
 // --------------------------------------------------------
 userSchema.virtual("password").set(function (password) {
   this.hash_password = bcrypt.hashSync(password, 10);
+  //
+  // this correspond to the salt: ...ord, 10);
+  // you are giving it a value from 1 to 10
+  // SALT : it serves merely to prevent two users with the same password getting the same hash.
 });
 // method related to password
 userSchema.methods = {
@@ -546,8 +550,15 @@ and is the User that will be exporting it.
 ```
 
 <br>
-<br>
-<br>
+
+#### what is BCRYPT?
+
+##### General Hash Function Background
+
+- In general, a hash algorithm or function takes data (i.e., the password) and maps to "fixed-size values," or creates a "digital fingerprint," or hash, of it. This hash is not exactly the same as the Ruby class, but they are similar. A hashing algorithm is like a key-value pair of passwords and their encryptions, but you wouldn't want to store or save them like that! The process is never truly "reversible," in the sense that if I hashed a list of passwords, and all you had was a list of unique crypts, the only way you could "hack" my passwords would be through something like brute force search. But you could never take a hashed value and return it to its original form!
+
+  <br>
+  <br>
 
 ### THE NEXT STEP will be to export the User from models to the user.js in ROUTES
 
@@ -637,7 +648,7 @@ module.exports = router;
 MONGO_DB_DATABASE = tomatoes;
 ```
 
-### Now you can test in POSTMAN
+##### Now you can test in POSTMAN
 
 ![rested](./src/img/result_after_changing_DB.jpg)
 
@@ -645,4 +656,162 @@ MONGO_DB_DATABASE = tomatoes;
 
 - from the moment you do that, you cannot click SEND again as it will say that the data you are trying to enter already exists, that data is now stored here:
 
+##### RESULT in ATLAS
+
 ![rested](./src/img/result-after-changing-db-name.png)
+
+<br>
+<br>
+<br>
+
+## GO TO the CONTROLLER folder
+
+- and add a user.js file
+- COPY AND PASTE
+
+- COPY the following from the user.js inside the ROUTES and paste it inside the controller user.js
+
+```javascript
+// IMPORTS from the schema inside the MODELS
+const User = require("../models/user");
+//
+// you will export import the whole content of this file with this:
+// const { signup } = require("../controller/user");
+// this will be added inside the routes
+
+User.findOne({
+  /*  if inside the req.body which is the 
+    data that the user is sending using the structure inside the schema
+    , if in that data there's a similar email,
+    then send an error.
+
+    */
+  email: req.body.email,
+}).exec((error, user) => {
+  if (user)
+    // if the user sends an existent email, return 400 status
+    return res.status(400).json({
+      message: "User already registered",
+    });
+  //
+  //
+  const { firstName, lastName, email, password } = req.body;
+  //Its says YOU KNOW WHAT create a new User:
+  // new User(
+  //  "based" on
+  //the User model schema in (user.js/models) , and pass inside those guys
+  // (req.body);
+  //so the data the user is giving:
+  const _user = new User({
+    firstName,
+    lastName,
+    email,
+    password,
+    username: Math.random().toString(), //its going to generate some random number
+  });
+
+  //                      ** SAVING the DATA **
+  //
+  // to save the data the user sent, you need the following:
+  _user.save((error, data) => {
+    // IF ERROR
+    // if there s any error in the data, return status 400 and "something went wrong"
+    if (error) {
+      return res.status(400).json({
+        message: "Something went wrong",
+      });
+    }
+    // IF SUCCESS , SAVE the data
+    if (data) {
+      return res.status(201).json({
+        message: "User created Successfully",
+      });
+    }
+  });
+});
+```
+
+<br>
+
+#### INSIDE THE user.js /CONTROLLER, REPLACE the following:
+
+```javascript
+//  replace this:
+module.exports = (req, res) => {
+  //  for this:
+exports.signup = (req, res) => {
+//   this function  makes reference to this:
+
+//
+//   // this function is inside the user.js / ROUTES
+router.post("/signup", (req, res, next) => {
+
+
+});
+```
+
+<br>
+
+### EXPORT the controllers user.js DATA:
+
+```javascript
+exports.signup = (req, res) => {
+```
+
+<br>
+
+### GO TO THE ROUTES / user.js
+
+- IMPORT the content of the controllers like so:
+
+- Since the exports.signup is a function, you must to import it in this way:
+
+```javascript
+// ROUTES folder : user.js
+// you will export import the whole content of this file with this:
+const { signup } = require("../controller/user");
+// this will be added inside the routes
+```
+
+<br>
+
+### THE user.js inside the ROUTES should look like this:
+
+```javascript
+const express = require("express");
+const { signup } = require("../controller/user");
+const router = express.Router();
+
+//
+//
+//
+//
+router.post("/signup", signup);
+
+router.post("/signin", (req, res, next) => {
+  // the User with the SCHEMA data
+});
+
+module.exports = router;
+```
+
+#### RENAME the user.js / in CONTROLLER
+
+- from user.js to auth.js
+
+<br>
+
+#### RENAME the user.js / in ROUTES
+
+- from user.js to auth.js
+
+##### CHECK IF THE SERVER IS STILL RUNNING, check also POSTMAN
+
+```javascript
+// result after changes from user to ROUTES
+server is running in PORT 2000
+Data base connnnnected :)
+
+```
+
+- after you added another user in POSTMAN to test if the changes from user.js to auth.js DIDNT affect the app, check if the new user was added in the collection inside the atlas

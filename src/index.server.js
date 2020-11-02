@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 
 //
 // ROUTES
-const userRoutes = require("./routes/user");
+const authRoutes = require("./routes/auth");
 //
 //  environment variable or you can say constants
 env.config();
@@ -29,7 +29,7 @@ mongoose
 app.use(bodyParser());
 // middleware: its the processor of the information you get for the ouside and the inside
 // like when a user send a post request , the middleware will check the data of the user and send a response depending on that.
-app.use("/api", userRoutes);
+app.use("/api", authRoutes);
 // the above is linked to this:
 // const userRoutes = require("./routes/user");
 
