@@ -1,5 +1,6 @@
 const express = require("express");
-const { signup } = require("../controller/auth");
+const { signup, signin } = require("../controller/auth");
+
 const router = express.Router();
 
 //
@@ -8,8 +9,6 @@ const router = express.Router();
 //
 router.post("/signup", signup);
 
-router.post("/signin", (req, res, next) => {
-  // the User with the SCHEMA data
-});
+router.post("/signin", signin);
 
 module.exports = router;

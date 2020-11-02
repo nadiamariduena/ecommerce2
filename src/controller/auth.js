@@ -90,7 +90,35 @@ exports.signin = (req, res) => {
 
         const { firstName, lastName, email, role, fullName } = user;
 
+        res.status(200).json({
+          token,
+          user: {
+            firstName,
+            lastName,
+            email,
+            role,
+            fullName,
+          },
+        });
         /*
+        So if this password fails to get MATCH, we will return another
+        response status 400
+        
+        */
+      } else {
+        return res.status(400).json({
+          message: "Invalid Password",
+        });
+      }
+
+      // -- ° --
+    } else {
+      return res.status(400).json({ message: "Something went WRONG" });
+    }
+  });
+};
+
+/*
 
 
 //  send the response after setting up the expiration of the token
@@ -121,17 +149,6 @@ exports.signin = (req, res) => {
         
         
         */
-        //
-      }
-    } else {
-      return res.status(400).json({ message: "Something went WRONG" });
-    }
-    //
-
-    //
-  });
-};
-
 /*
 
 

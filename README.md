@@ -1003,4 +1003,62 @@ userSchema.virtual("fullName").get(function () {
 const { firstName, lastName, email, role, fullName } = user;
 ```
 
-#### SO once its done
+#### SO once its done, you should add the 200 STATUS after the user authentication was SUCCESSFUL but is the password is wrong , send a 400 message
+
+```javascript
+        const { firstName, lastName, email, role, fullName } = user;
+
+        res.status(200).json({
+          token,
+          user: {
+            firstName,
+            lastName,
+            email,
+            role,
+            fullName,
+          },
+        });
+        /*
+        So if this password fails to get MATCH, we will return another
+        response status 400
+
+        */
+      } else {
+        return res.status(400).json({
+          message: "Invalid Password",
+        });
+      }
+
+      // -- ° --
+```
+
+<br>
+<br>
+
+#### NOW GO TO auth.js / ROUTES AND REMOVE stuff
+
+```javascript
+// REPLACE THIS:
+
+router.post("/signin", (req, res, next) => {
+  // the User with the SCHEMA data
+});
+
+//
+// FOR THIS:
+
+// DONT FORGET TO REQUIRE IT
+const { signup, signin } = require("../controller/auth");
+//
+//
+router.post("/signin", signin);
+```
+
+##### NOW TEST IT, check if you are still connected to the server and if everything is alright , go to POSTMAN and send a POST REQUEST:
+
+
+- ON POST 
+
+- localhost:2000/api/signin
+
+- send POST REQUEST
