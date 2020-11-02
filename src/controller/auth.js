@@ -1,7 +1,7 @@
 // IMPORTS from the schema inside the MODELS
 const User = require("../models/user");
 //  TOKEN related
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 //
 //
 // -------------------------------------------
@@ -80,29 +80,48 @@ exports.signin = (req, res) => {
     if (user) {
       // this authenticate is related to the function inside the user.js /MODELS FOLDER
       if (user.authenticate(req.body.password)) {
+        //
+        //
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+          expiresIn: "1h",
+        });
+        // you can say this TOKEN will expire after 1d or 2 days
+        // {expiresIn: "2d"}
 
-
-
-
+        const { firstName, lastName, email, role } = user;
 
         /*
 
-So what it means:
 
-IF THE USER EXISTS "authenticate successful" , we are going to
-return a 2TOKEN" so that we can manage the user session, so 
-whenever a USER log in, he will send  a TOKEN every request so we can 
-verify fron the BACKEND
-
-BUT FIRST install and then IMPORT THE LIBRARY for the TOKEN
-
-npm install jsonwebtoken
+//  send the response after setting up the expiration of the token
 
 
-//  TOKEN related
-const jwt = require("jsonwebtoken")
 
-*/
+
+
+
+       - so if the user
+            // ------ TOKEN
+                if (user) {
+       - and the password is true when authenticating: 
+        if (user.authenticate(req
+        -  so we can use the User data
+        jwt.sign({_id: user._id})
+         user._id})
+        - so that we can get the "user" from this
+        callback function :
+        exec((error, user) => {
+          this user will reach this "User":
+       User.findOne
+
+       and this "User" is going to findOne user with
+       that data and once it does, it will show all the
+       data from that user.
+        
+        
+        
+        */
+        //
       }
     } else {
       return res.status(400).json({ message: "Something went WRONG" });

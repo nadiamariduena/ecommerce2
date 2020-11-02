@@ -852,4 +852,122 @@ const jwt = require("jsonwebtoken");
 
 <br>
 
-##### NOW create the function that will be used in the auth.js / ROUTES
+#### NOW create the SING IN, that will be used in the auth.js / ROUTES
+
+<br>
+
+```javascript
+   if (user.authenticate(req.body.password)) {
+```
+
+<br>
+
+###### So what it means:
+
+- IF THE USER EXISTS "authenticate successful" , we are going to
+  return a "TOKEN" so that we can manage the user session, so
+  whenever a USER log in, he will send a TOKEN every request so we can
+  verify fron the BACKEND
+
+  ### THE TOKEN
+
+```javascript
+// -------------------------------------------
+//
+//        SIGN IN
+//
+// -------------------------------------------
+
+exports.signin = (req, res) => {
+  // the User is the imported data from the schema
+  User.findOne({
+    email: req.body.email,
+  }).exec((error, user) => {
+    // IF the user log in with something incorrect , launch an error message
+    if (error)
+      return res.status(400).json({
+        error,
+      });
+    // ------ TOKEN
+    if (user) {
+      // this authenticate is related to the function inside the user.js /MODELS FOLDER
+      if (user.authenticate(req.body.password)) {
+        //
+        //
+        const token = jwt.sign({ _id: user._id });
+        //
+        /*
+
+       - so if the user
+            // ------ TOKEN
+                if (user) {
+       - and the password is true when authenticating: 
+        if (user.authenticate(req
+        -  so we can use the User data
+        jwt.sign({_id: user._id})
+         user._id})
+        - so that we can get the "user" from this
+        callback function :
+        exec((error, user) => {
+          this user will reach this "User":
+       User.findOne
+
+       and this "User" is going to findOne user with
+       that data and once it does, it will show all the
+       data from that user.
+        
+        after this go to the .env and create the secret key
+        like so:
+        JWT_SECRET=MERNSECRET
+
+        NOW GO TO AUTH.JS / controller
+        
+        */
+        //
+      }
+    } else {
+      return res.status(400).json({ message: "Something went WRONG" });
+    }
+    //
+
+    //
+  });
+};
+```
+
+#### GO TO THE .env AND ADD THE FOLLOWING:
+
+`JWT_SECRET=MERNSECRET`
+
+- then add it here:
+
+```javascript
+ const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+```
+
+<br>
+
+### THE EXPIRATION OF THE TOKEN
+
+```javascript
+    if (user) {
+      // this authenticate is related to the function inside the user.js /MODELS FOLDER
+      if (user.authenticate(req.body.password)) {
+        //
+        // THE EXPIRATION -----------
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+          expiresIn: "1h",
+        });
+            // THE EXPIRATION -----------
+            //
+        // you can say this TOKEN will expire after 1d or 2 days
+        // {expiresIn: "2d"}
+```
+
+<br>
+
+#### After setting up the expiration of the token, send the response
+
+- go to the user.js/ MODELS
+
+#### CREATE THE VIRTUAL  KEY :key:
