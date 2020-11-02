@@ -88,7 +88,7 @@ exports.signin = (req, res) => {
         // you can say this TOKEN will expire after 1d or 2 days
         // {expiresIn: "2d"}
 
-        const { firstName, lastName, email, role } = user;
+        const { firstName, lastName, email, role, fullName } = user;
 
         /*
 

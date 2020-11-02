@@ -76,6 +76,15 @@ userSchema.virtual("password").set(function (password) {
   // you are giving it a value from 1 to 10
   // SALT : it serves merely to prevent two users with the same password getting the same hash.
 });
+
+// ------------
+// VIRTUAL KEY
+// ------------
+
+userSchema.virtual("fullName").get(function () {
+  return `${this.firstName}, ${this.lastName}`;
+});
+
 // ------------
 // methods
 // ------------

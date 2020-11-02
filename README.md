@@ -966,8 +966,41 @@ exports.signin = (req, res) => {
 
 <br>
 
+##### What is in a JWT token?
+
+- JSON Web Token (JWT) is a means of representing claims to be transferred between two parties. The claims in a JWT are encoded as a JSON object that is digitally signed using JSON Web Signature (JWS) and/or encrypted using JSON Web Encryption (JWE).
+
+<br>
+
 #### After setting up the expiration of the token, send the response
+
+<br>
+
+#### CREATE THE VIRTUAL KEY :key:
 
 - go to the user.js/ MODELS
 
-#### CREATE THE VIRTUAL  KEY :key:
+- create a new schemas: userSchema.virtual("fullName")
+
+```javascript
+// ------------
+// VIRTUAL KEY
+// ------------
+
+userSchema.virtual("fullName").get(function () {
+  return `${this.firstName}, ${this.lastName}`;
+});
+```
+
+#### now go back to the auth.js/controllers and add the following:
+
+- fullName
+
+`fullName } = user;`
+
+```javascript
+//  It should look like so:
+const { firstName, lastName, email, role, fullName } = user;
+```
+
+#### SO once its done
