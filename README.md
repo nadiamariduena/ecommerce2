@@ -815,3 +815,41 @@ Data base connnnnected :)
 ```
 
 - after you added another user in POSTMAN to test if the changes from user.js to auth.js DIDNT affect the app, check if the new user was added in the collection inside the atlas
+
+<br>
+<br>
+<br>
+
+# TOKEN :briefcase:
+
+##### CREATE THE "SIGN IN" BUT BEFORE | INSTALL THE FOLLOWING:
+
+- npm install jsonwebtoken
+
+##### THEN require it
+
+```javascript
+//  TOKEN related
+const jwt = require("jsonwebtoken");
+
+
+//
+// IT SHOULD LOOK LIKE THIS in the dependencies
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.6.1",
+    //
+    "jsonwebtoken": "^8.5.1",
+    //
+    "mongoose": "^5.10.10",
+    "nodemon": "^2.0.6"
+  }
+
+```
+
+<br>
+
+##### NOW create the function that will be used in the auth.js / ROUTES

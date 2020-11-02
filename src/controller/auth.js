@@ -1,8 +1,19 @@
 // IMPORTS from the schema inside the MODELS
 const User = require("../models/user");
-
+//  TOKEN related
+const jwt = require("jsonwebtoken")
+//
+//
+// -------------------------------------------
+//
+//        SIGN UP
+//
+// -------------------------------------------
+//
+//
 // here you dont need NEXT because you are not passing a request
 exports.signup = (req, res) => {
+  // the User is the imported data from the schema
   User.findOne({
     email: req.body.email,
   }).exec((error, user) => {
@@ -49,7 +60,71 @@ exports.signup = (req, res) => {
   });
 };
 
+// -------------------------------------------
+//
+//        SIGN IN
+//
+// -------------------------------------------
+
+exports.signin = (req, res) => {
+  // the User is the imported data from the schema
+  User.findOne({
+    email: req.body.email,
+  }).exec((error, user) => {
+    // IF the user log in with something incorrect , launch an error message
+    if (error)
+      return res.status(400).json({
+        error,
+      });
+    // ------ TOKEN
+    if (user) {
+      // this authenticate is related to the function inside the user.js /MODELS FOLDER
+      if (user.authenticate(req.body.password)) {
+
+
+
+
+
+        /*
+
+So what it means:
+
+IF THE USER EXISTS "authenticate successful" , we are going to
+return a 2TOKEN" so that we can manage the user session, so 
+whenever a USER log in, he will send  a TOKEN every request so we can 
+verify fron the BACKEND
+
+BUT FIRST install and then IMPORT THE LIBRARY for the TOKEN
+
+npm install jsonwebtoken
+
+
+//  TOKEN related
+const jwt = require("jsonwebtoken")
+
+*/
+      }
+    } else {
+      return res.status(400).json({ message: "Something went WRONG" });
+    }
+    //
+
+    //
+  });
+};
+
 /*
+
+
+
+
+
+
+
+
+
+
+
                 400 Bad Request response status code indicates that 
                 the server cannot or will not process the request due
                 to something that is perceived to be a client error 
