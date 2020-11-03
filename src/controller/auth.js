@@ -76,7 +76,7 @@ exports.signin = (req, res) => {
       return res.status(400).json({
         error,
       });
-    // ------ TOKEN
+    // ------ TOKEN | SESSION 
     if (user) {
       // this authenticate is related to the function inside the user.js /MODELS FOLDER
       if (user.authenticate(req.body.password)) {

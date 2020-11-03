@@ -1054,11 +1054,77 @@ const { signup, signin } = require("../controller/auth");
 router.post("/signin", signin);
 ```
 
-##### NOW TEST IT, check if you are still connected to the server and if everything is alright , go to POSTMAN and send a POST REQUEST:
+<br>
+<br>
 
+#### AT THE END ITS SHOULD LOOK LIKE THIS:
 
-- ON POST 
+```javascript
+// -------------------------------------------
+//
+//        SIGN IN
+//
+// -------------------------------------------
+
+exports.signin = (req, res) => {
+  // the User is the imported data from the schema
+  User.findOne({
+    email: req.body.email,
+  }).exec((error, user) => {
+    // IF the user log in with something incorrect , launch an error message
+    if (error)
+      return res.status(400).json({
+        error,
+      });
+    // ------ TOKEN
+    if (user) {
+      // this authenticate is related to the function inside the user.js /MODELS FOLDER
+      if (user.authenticate(req.body.password)) {
+        //
+        //
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+          expiresIn: "1h",
+        });
+        // you can say this TOKEN will expire after 1d or 2 days
+        // {expiresIn: "2d"}
+
+        const { firstName, lastName, email, role, fullName } = user;
+
+        res.status(200).json({
+          token,
+          user: {
+            firstName,
+            lastName,
+            email,
+            role,
+            fullName,
+          },
+        });
+        /*
+        So if this password fails to get MATCH, we will return another
+        response status 400
+        
+        */
+      } else {
+        return res.status(400).json({
+          message: "Invalid Password",
+        });
+      }
+
+      // -- ° --
+    } else {
+      return res.status(400).json({ message: "Something went WRONG" });
+    }
+  });
+};
+```
+
+##### NOW TEST IT, check if you are still connected to the server and if everything is alright , go to POSTMAN and send a POST REQUEST/SIGNIN:
+
+- ON POST
 
 - localhost:2000/api/signin
 
 - send POST REQUEST
+
+  ![rested](./src/img/token_cookies.gif)
