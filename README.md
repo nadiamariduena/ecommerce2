@@ -532,6 +532,9 @@ userSchema.virtual("password").set(function (password) {
   //
   // this correspond to the salt: ...ord, 10);
   // you are giving it a value from 1 to 10
+  // HASH the goddam plain text password
+  // second parameter of hashSync => salting ROUNDS
+  // (=> we add a salt 10 times ! and hash after each round again)
   // SALT : it serves merely to prevent two users with the same password getting the same hash.
 });
 // method related to password
@@ -800,6 +803,10 @@ module.exports = router;
 - from user.js to auth.js
 
 <br>
+<br>
+<hr>
+<br>
+<br>
 
 #### RENAME the user.js / in ROUTES
 
@@ -817,10 +824,10 @@ Data base connnnnected :)
 - after you added another user in POSTMAN to test if the changes from user.js to auth.js DIDNT affect the app, check if the new user was added in the collection inside the atlas
 
 <br>
-<br>
-<br>
 
-# TOKEN :briefcase:
+# :briefcase: TOKEN | COOKIES | SESSIONS :briefcase:
+
+<br>
 
 ##### CREATE THE "SIGN IN" BUT BEFORE | INSTALL THE FOLLOWING:
 
@@ -849,6 +856,16 @@ const jwt = require("jsonwebtoken");
   }
 
 ```
+
+<br>
+
+## JSON Web Signature (JWS)
+
+<br>
+
+#### What is in a JWT token?
+
+- JSON Web Token (JWT) is a means of representing claims to be transferred between two parties. The claims in a JWT are encoded as a JSON object that is digitally signed using JSON Web Signature (JWS) and/or encrypted using JSON Web Encryption (JWE).
 
 <br>
 
@@ -937,9 +954,15 @@ exports.signin = (req, res) => {
 
 #### GO TO THE .env AND ADD THE FOLLOWING:
 
-`JWT_SECRET=MERNSECRET`
+```javascript
+JWT_SECRET = MERNSECRET;
+```
 
-- then add it here:
+<br>
+
+- then add it inside the auth.js/ controllers :
+
+<br>
 
 ```javascript
  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
@@ -966,17 +989,11 @@ exports.signin = (req, res) => {
 
 <br>
 
-##### What is in a JWT token?
-
-- JSON Web Token (JWT) is a means of representing claims to be transferred between two parties. The claims in a JWT are encoded as a JSON object that is digitally signed using JSON Web Signature (JWS) and/or encrypted using JSON Web Encryption (JWE).
-
 <br>
 
-#### After setting up the expiration of the token, send the response
+##### After setting up the expiration of the TOKEN:
 
-<br>
-
-#### CREATE THE VIRTUAL KEY :key:
+### CREATE THE VIRTUAL KEY :key:
 
 - go to the user.js/ MODELS
 
@@ -992,7 +1009,7 @@ userSchema.virtual("fullName").get(function () {
 });
 ```
 
-#### now go back to the auth.js/controllers and add the following:
+#### now go back to the auth.js/controllers | After setting up the expiration of the TOKEN, send the response but before:
 
 - fullName
 
@@ -1119,12 +1136,62 @@ exports.signin = (req, res) => {
 };
 ```
 
-##### NOW TEST IT, check if you are still connected to the server and if everything is alright , go to POSTMAN and send a POST REQUEST/SIGNIN:
+<br>
 
-- ON POST
+##### GO TO THE "POSTMAN" and create a new user, add the following:
 
-- localhost:2000/api/signin
+- method POST
+- type the following url: localhost:2000/api/signup
 
-- send POST REQUEST
+- fill the box with this and then click send:
 
-  ![rested](./src/img/token_cookies.gif)
+```javascript
+{
+     "firstName": "melissa",
+    "lastName": "neira",
+    "email": "neira@domain.com",
+    "password": "clfosddud"
+}
+```
+
+#### result:
+
+```javascript
+{
+    "message": "User created Successfully"
+}
+```
+
+##### THE MESSAGE will be different of you send a request with a data that you already have, in that case the essage will be "you have already enregistered that user" pr something like that
+
+<br>
+
+![rested](./src/img/token_cookies.gif)
+
+##### SO this is the result of this:
+
+```javascript
+ // ------ TOKEN | SESSION  ---------------------------------------------
+    if (user) {
+      if (user.authenticate(req.body.password)) {
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+          expiresIn: "1h",
+        });
+
+        const { _id, firstName, lastName, email, role, fullName } = user;
+        res.status(200).json({
+          token,
+          user: { _id, firstName, lastName, email, role, fullName },
+        });
+        // ------ TOKEN | SESSION   end ----------------------------------
+      } else {
+```
+
+![rested](./src/img/signup_token.jpg)
+
+<br>
+<br>
+
+### NOW go to THE ATLAS and delete what you just created in the image above, as its SENSITIVE DATA.
+
+![rested](./src/img/mongo_user_purge.jpg)

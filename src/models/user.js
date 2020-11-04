@@ -69,6 +69,9 @@ const userSchema = new mongoose.Schema(
 //
 // --------------------------------------------------------
 userSchema.virtual("password").set(function (password) {
+  // HASH the goddam plain text password
+  // second parameter of hashSync => salting ROUNDS
+  // (=> we add a salt 10 times ! and hash after each round again)
   this.hash_password = bcrypt.hashSync(password, 10);
 
   //
@@ -97,3 +100,26 @@ userSchema.methods = {
 // --------------------------------------------------------
 
 module.exports = mongoose.model("User", userSchema);
+
+/*
+// --------------------------------------------------------
+
+
+          QUESTIONS
+// --------------------------------------------------------
+
+
+1:
+
+WHAT IS THE DIFFERENCE BETWEEN A NORMAL SCHEMA LIKE IN LINE 15
+AND THE VIRTUAL SCHEMA IN LINE 84 AND 92
+
+
+
+2
+_id: user._id }
+IS THIS MAKING allusion to the whole data of the user?
+
+
+3 when to use arrow functions and when not?
+*/

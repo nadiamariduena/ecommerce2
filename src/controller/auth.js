@@ -76,7 +76,7 @@ exports.signin = (req, res) => {
       return res.status(400).json({
         error,
       });
-    // ------ TOKEN | SESSION 
+    // ------ TOKEN | SESSION  --------------------------------------------------------
     if (user) {
       // this authenticate is related to the function inside the user.js /MODELS FOLDER
       if (user.authenticate(req.body.password)) {
@@ -88,23 +88,18 @@ exports.signin = (req, res) => {
         // you can say this TOKEN will expire after 1d or 2 days
         // {expiresIn: "2d"}
 
-        const { firstName, lastName, email, role, fullName } = user;
+        const { _id, firstName, lastName, email, role, fullName } = user;
 
         res.status(200).json({
           token,
-          user: {
-            firstName,
-            lastName,
-            email,
-            role,
-            fullName,
-          },
+          user: { _id, firstName, lastName, email, role, fullName },
         });
         /*
         So if this password fails to get MATCH, we will return another
         response status 400
         
         */
+        // ------ TOKEN | SESSION   end -------------------------------------------------
       } else {
         return res.status(400).json({
           message: "Invalid Password",
@@ -118,37 +113,22 @@ exports.signin = (req, res) => {
   });
 };
 
+//
+//
+//
+
+//
+//
+//
+// -------------------------------------------
+//
+//
+//
+// -------------------------------------------
+
 /*
 
 
-//  send the response after setting up the expiration of the token
-
-
-
-
-
-
-       - so if the user
-            // ------ TOKEN
-                if (user) {
-       - and the password is true when authenticating: 
-        if (user.authenticate(req
-        -  so we can use the User data
-        jwt.sign({_id: user._id})
-         user._id})
-        - so that we can get the "user" from this
-        callback function :
-        exec((error, user) => {
-          this user will reach this "User":
-       User.findOne
-
-       and this "User" is going to findOne user with
-       that data and once it does, it will show all the
-       data from that user.
-        
-        
-        
-        */
 /*
 
 
