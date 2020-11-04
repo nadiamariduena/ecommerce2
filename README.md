@@ -1495,6 +1495,20 @@ exports.requireSignin = (req, res, next) => {
 
 <br>
 <br>
+
+## :cake::cake::cake::cake::cake: :cake:
+
+### PROCESS
+
+- Watch the video to follow the steps
+
+[<img src="./src/img/result-token-user.jpg">](https://youtu.be/7OWrWcOikU0)
+
+<br>
+
+
+<br>
+<br>
 <br>
 <hr>
 <br>
