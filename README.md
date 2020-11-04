@@ -1212,3 +1212,292 @@ exports.signin = (req, res) => {
 <br>
 <hr>
 <br>
+
+#### CREATE A PAGE WHERE THE "LOGGED IN " CAN NAVIGATE
+
+- ONCE THE USER is logged in
+- this will be one of the protected routes he will be allowed to navigate
+
+```javascript
+router.post("/profile", (req, res) => {
+  res.status(200).json({ user: "profile" });
+});
+```
+
+<br>
+
+#### NOW GO TO "postman" and check if the new route "profile" works
+
+- Type : localhost:2000/api/profile
+
+###### RESULT:
+
+```javascript
+{
+    "user": "profile"
+}
+```
+
+<p>RIGHT NOW this is just normal POST request, We havent verified the REQUEST like in the case he was logged IN</p>
+
+- For that we will need to create another MIDDLEWARE
+
+<br>
+
+<br>
+
+## VERIFY A TOKEN
+
+##### GO TO auth.js / CONTROLLER
+
+- under the SIGNIN function , export.require the following:
+
+```javascript
+// -------------------------------------------
+//
+//           VERIFY A TOKEN
+//
+// -------------------------------------------
+exports.requireSignin = (req, res, nex) => {
+  jwt.decode();
+  // with the above you decode the TOKEN
+};
+```
+
+##### GO TO the "postman"
+
+- attach some headers
+
+- type: Authorization in a new field
+
+- type: Bearer token
+
+- click send, so to receive the req with the new fields
+
+![rested](./src/img/authorization_bearertoken.jpg)
+
+<br>
+
+##### GO TO auth.js / CONTROLLER
+
+- NOW THAT YOU FILLED THE FIELDS inside the "Headers"
+
+- add the headers like so: const token = req.headers.authorization;
+
+```javascript
+exports.requireSignin = (req, res, nex) => {
+  const token = req.headers.authorization;
+  console.log(token);
+  next(); //****** dont forget this
+  // hide this when you are going to console log it: jwt.decode();
+  // jwt.decode();
+  // with the above you decode the TOKEN
+};
+```
+
+##### next(); //**\*\*** dont forget this
+
+- AS it will call the next function where this is:
+
+- if you forget , you will have an error
+
+```javascript
+// auth.js /routes
+res.status(200).json({ user: "profile" });
+```
+
+<br>
+
+##### GO TO auth.js / ROUTES , and Add the "requireSignin" function
+
+- IMPORT THE NEW FUNCTION on the top of the auth.js / routes
+
+```javascript
+const { signup, signin, requireSignin } = require("../controller/auth");
+```
+
+```javascript
+//before requireSignin
+
+router.post("/profile", (req, res) => {
+  res.status(200).json({ user: "profile" });
+});
+// after requireSignin
+router.post("/profile", requireSignin, (req, res) => {
+  res.status(200).json({ user: "profile" });
+});
+```
+
+##### SO what is happening here is that, it tells that once the "requireSignin" function is executed:
+
+`"/profile", requireSignin,`
+
+##### this other one, the next() will follow:
+
+- next() because you have it there in the auth.js /controller
+
+```javascript
+, (req, res) => {
+  res.status(200).json({ user: "profile" });
+});
+```
+
+<br>
+
+##### GO TO the "postman" and now CLICK SEND
+
+- YOU WILL HAVE THE SAME USER result
+
+```javascript
+{
+    "user": "profile"
+}
+```
+
+- But if the function really worked , you will have inside the server in the vs another message, the message : Bearer token
+
+![rested](./src/img/bearer-token-result-server.jpg)
+
+<br>
+<br>
+
+#### AFTER THAT GO TO THE auths.js /controller
+
+###### VERIFY the token
+
+```javascript
+// -------------------------------------------
+//
+//           VERIFY A TOKEN
+//
+// -------------------------------------------
+exports.requireSignin = (req, res, next) => {
+  const token = req.headers.authorization.split("")[1];
+  // [1] is going to grab the token from the words "Bearer token"
+  const user = jwt.verify(token, process.env.JWT_SECRET);
+  req.user = user;
+  next();
+};
+```
+
+##### GO TO THE POSTMAN and test it
+
+- while you are in POST
+
+- this is in the url: localhost:2000/api/profile
+
+- there are 2 headers " Content-Type and Authorization"
+
+- Click SEND
+
+##### RESULT
+
+### ERROR (jwt malformed)
+
+![rested](./src/img/error_jwt_malformed1.jpg)
+
+##### REASONS FOR THE ERROR
+
+- in the tutorial he commited 2 errors
+
+- instead of verify he put decoded i think
+
+- also he forgot the .env
+
+##### MY MISTAKES
+
+- I FORGOT that i purged the user inside the atlas
+
+- After i created a new user inside the postman again, i had the following result:
+
+![rested](./src/img/new_user.jpg)
+
+- Of course you must to change the url from signup to signin so to get the result above.
+
+#### WHILE YOU ARE INSIDE THE POSTMAN
+
+- copy the token that was provided in the result "check the image"
+
+- type this url: localhost:200/api/signin
+
+- click on Header and remove the "Authorization" field
+
+- click on body and leave just this 2 fields:
+
+```javascript
+{
+    "email": "neiran@domain.com",
+    "password": "clfosnddud"
+}
+```
+
+###### RESULT
+
+```javascript
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmEzMDliYzlmM2M2MjUyZWJhMDkyMDAiLCJpYXQiOjE2MDQ1MjE3MzksImV4cCI6MTYwNDUyNTMzOX0.yUX-PeoxhCbXv41zgGYGBiDkdMr0ZHz6KICxRTTeNkc",
+    "user": {
+        "_id": "5fa309bc9f3c6252eba09200",
+        "firstName": "melinssa",
+        "lastName": "neimra",
+        "email": "neiran@domain.com",
+        "role": "user",
+        "fullName": "melinssa, neimra"
+    }
+}
+```
+
+##### NOW COPY THE TOKEN
+
+- CREATE A NEW TAB inside the postman
+
+- click on Headers
+
+- type this url: localhost:200/api/profile
+
+- POST method
+
+- click on Headers and add a key field: Authorization
+
+- add a value : Bearer
+
+- inside the Bearer field paste the token code like so:
+
+![rested](./src/img/fucking-verify_token.jpg)
+
+- paste the token code
+
+#### Big error (due to a stupid mistake)
+
+- the split here has to have the space between the " " , if its like this "", it wont work and you will continue to have the "jwt malformed" error
+
+```javascript
+.split(" ")[1];
+```
+
+<br>
+
+#### NOW IF YOU MODIFY the TOKEN like for example if you take 2 letters from the code, it will send an error like so:
+
+- JsonWebTokenError: invalid signature
+
+![rested](./src/img/token-error-invalid_signature.jpg)
+
+<br>
+
+#### ANYWAY... if all worked you will have this message:
+
+```javascript
+{
+    "user": "profile"
+}
+```
+
+<br>
+<br>
+<br>
+<hr>
+<br>
+<br>
+
+#### CREATE AN ADMIN file inside the CONTROLLER folder

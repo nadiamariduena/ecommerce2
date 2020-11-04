@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 //
 // password security related
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 //
 
 //                       ******

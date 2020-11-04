@@ -139,9 +139,20 @@ exports.signin = (req, res) => {
 //
 // -------------------------------------------
 //
-//
+//           VERIFY A TOKEN
 //
 // -------------------------------------------
+// [1] is going to grab the token from the words "Bearer token"
+
+exports.requireSignin = (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const user = jwt.verify(token, process.env.JWT_SECRET);
+  req.user = user;
+  // so that i can access that user in the next function
+  next();
+  // jwt.verify();
+  // with the above you decode the TOKEN
+};
 
 /*
 
