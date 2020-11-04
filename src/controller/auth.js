@@ -80,14 +80,31 @@ exports.signin = (req, res) => {
     if (user) {
       // this authenticate is related to the function inside the user.js /MODELS FOLDER
       if (user.authenticate(req.body.password)) {
-        //
-        //
+        /* if this password above fail to match , go to line 105 and send the error, 
+              } else {
+        return res.status(400).json({
+          message: "Invalid Password",
+        });
+      }
+        but 
+        if the pass is 
+         correct send response :
+                // THE RESPONSE
+        const { _id, firstName, lastName, email, role, fullName } = user;
+
+        res.status(200).json({
+          token,
+          user: { _id, firstName, lastName, email, role, fullName },
+        });*/
+        //????
         const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
           expiresIn: "1h",
         });
         // you can say this TOKEN will expire after 1d or 2 days
         // {expiresIn: "2d"}
-
+        //
+        //
+        // THE RESPONSE
         const { _id, firstName, lastName, email, role, fullName } = user;
 
         res.status(200).json({
