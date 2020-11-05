@@ -1513,6 +1513,11 @@ exports.requireSignin = (req, res, next) => {
 <br>
 <br>
 
+### :cat: THE ADMIN :cat:
+
+<br>
+<br>
+
 #### CREATE AN ADMIN file inside the CONTROLLER folder
 
 - CHECK THE VIDEO (click on the image) to follow the steps
