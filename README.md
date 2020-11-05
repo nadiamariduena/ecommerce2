@@ -1974,3 +1974,10 @@ app.listen(process.env.PORT, () => {
   console.log(`server is running in PORT ${process.env.PORT}`);
 });
 ```
+
+<br>
+<br>
+##  :construction: THE END OF USER AND ADMIN authentication , SIGNIN / SIGNUP  :construction:
+<br>
+<hr>
+<br>
