@@ -1550,6 +1550,45 @@ localhost: 2000 / admin / signup;
 
 <br>
 
+- IF YOU NOTICE , the user admin is going to be created when you type this url:
+
+```javascript
+localhost: 2000 / api / admin / signup;
+```
+
+<br>
+
+- If you were typing just
+
+```javascript
+localhost: 2000 / api / signup;
+```
+
+- it will only create a normal user
+
+<br>
+<br>
+
+#### NOW TEST THE SIGNIN of the new admin user:
+
+###### GOT TO THE POSTMAN AND TYPE THE FOLLOWING:
+
+```javascript
+{
+
+    "email": "philosophym@domain.com",
+    "password": "nabbxxxxla"
+}
+```
+
+![rested](./src/img/signin_admin_user.gif)
+
+<br><br>
+
+### THE FOLLOWING is related to what you saw in the first video of the "adding the ADMIN"
+
+<br>
+
 #### CONTROLLER / ADMIN /auth.js
 
 ```javascript
