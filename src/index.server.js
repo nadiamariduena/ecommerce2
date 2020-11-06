@@ -28,8 +28,23 @@ mongoose
 //
 
 app.use(bodyParser());
-// middleware: its the processor of the information you get for the ouside and the inside
-// like when a user send a post request , the middleware will check the data of the user and send a response depending on that.
+/*
+
+middleware: its the processor of the information 
+you get for the ouside and the inside
+// like when a user send a post request , 
+the middleware will check the data of the user 
+and send a response depending on that.
+
+What does body parser do in Express?
+
+body-parser extract the entire body portion of an incoming request 
+stream and exposes it on req. body . The middleware was a part of Express. 
+js earlier but now you have to install it separately. This body-parser module parses
+ the JSON, buffer, string and URL encoded data submitted using HTTP POST request.
+*/
+
+
 app.use("/api", authRoutes);
 // the above is linked to this:
 // const userRoutes = require("./routes/user");

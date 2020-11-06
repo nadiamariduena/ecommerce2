@@ -134,6 +134,27 @@ body-parser deprecated undefined extended: provide extended option node_modules/
 - DONT WORRY about for now!
 
 <br>
+
+#### What does body parser do in Express?
+
+<br>
+
+ <p> body-parser extract the entire body portion of an incoming request 
+stream and exposes it on req. body . The middleware was a part of Express. 
+js earlier but now you have to install it separately. This body-parser module parses
+ the JSON, buffer, string and URL encoded data submitted using HTTP POST request.
+</p>
+
+ </p>
+ 
+<p>
+middleware: its the processor of the information 
+you get for the ouside and the inside
+// like when a user send a post request , 
+the middleware will check the data of the user 
+and send a response depending on that.
+</p>
+
 <br>
 <hr>
 <br>
@@ -1981,3 +2002,128 @@ app.listen(process.env.PORT, () => {
 <br>
 <hr>
 <br>
+<br>
+<br>
+<br>
+##  :golf:  EXPRESS VALIDATOR  :golf:
+
+#### What is express validator?
+
+- Express Validator is an Express middleware library that you can incorporate in your apps for server-side data validation.
+
+  <br>
+
+- Express Validator is a set of Express. js middleware that wraps validator. js , a library that provides validator and sanitizer functions.
+
+#### What does express sanitizer do?
+
+- An express middleware for Caja-HTML-Sanitizer, which wraps Google Caja sanitizer. A useful complement to the express-validator -- to fill a gap now that XSS sanitization support has been removed from that module's parent node-validator
+
+###### ABOUT EXPRESS VALIDATOR :
+
+[READ MORE](https://express-validator.github.io/docs/)
+<br>
+<br>
+
+### START by requiring the "Express Validator"
+
+- GO TO THE auth.js/CONTROLLER and import/require express validator like so:
+
+```javascript
+const { check } = require("express-validator");
+// { check } is the function you are going to work with, to check if the user
+// add all the required info.
+```
+
+<br>
+
+##### NOW ADD THE FOLLOWING DATA inside the array
+
+```javascript
+  [
+    check("firstName").isEmpty().withMessage("firstName is required"),
+    check("lastName").isEmpty().withMessage("lastName is required"),
+    check("lastName"),
+    check("email").isEmail().withMessage("Valid Email is required"),
+    check("password")
+      .isLength({ min: 6 })
+      .withMessage("Password must be at least 6 character long"),
+  ],
+```
+
+- As you can notice the array contains all the data we specified inside the "schema" , user.js/MODELS folder.
+
+```javascript
+const express = require("express");
+const { signup, signin } = require("../controller/auth");
+const { check } = require("express-validator");
+// { check } is the function you are going to work with, to check if the user
+// add all the required info.
+const router = express.Router();
+//
+router.post(
+  "/signup",
+  [
+    /*
+  *****    OPEN AN ARRAY   *****
+  *****    AND ADD THE DATA HERE    *****
+
+                    */
+  ],
+  signup
+);
+
+router.post("/signin", signin);
+module.exports = router;
+```
+
+<br>
+
+#### NOW go to the auth.js CONTROLLER
+
+- add the validations result: const { validationResult } = require("express-validator");
+
+```javascript
+// IMPORTS from the schema inside the MODELS
+const User = require("../models/user");
+const { validationResult } = require("express-validator");
+//
+//  TOKEN related
+const jwt = require("jsonwebtoken");
+```
+
+##### CALL the validation result in the same file:
+
+```javascript
+// -------------------------------------------
+//
+//        SIGN UP
+//
+// -------------------------------------------
+//
+//
+
+exports.signup = (req, res) => {
+
+
+  const errors = validationResult(req);
+  return res.status(400).json({ errors: errors.array() });
+//
+//
+
+  // the User is the imported data from the schema
+  User.findOne({
+    email: req.body.email,
+  }).exec((error, user) => {
+    if (user)
+      return res.status(400).json({
+        message: "User already registered",
+      });
+    // etc ...
+```
+
+<br>
+
+#### NOW TEST IT in POSTMAN
+
+![rested](./src/img/expressvalidator_check1.gif)

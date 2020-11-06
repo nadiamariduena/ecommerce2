@@ -1,5 +1,7 @@
 // IMPORTS from the schema inside the MODELS
 const User = require("../models/user");
+const { validationResult } = require("express-validator");
+//
 //  TOKEN related
 const jwt = require("jsonwebtoken");
 //
@@ -11,8 +13,12 @@ const jwt = require("jsonwebtoken");
 // -------------------------------------------
 //
 //
-// here you dont need NEXT because you are not passing a request
+
 exports.signup = (req, res) => {
+  const errors = validationResult(req);
+  return res.status(400).json({ errors: errors.array() });
+  //
+  //
   // the User is the imported data from the schema
   User.findOne({
     email: req.body.email,
