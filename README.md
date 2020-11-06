@@ -2140,3 +2140,27 @@ exports.signup = (req, res) => {
 #### NOW TEST IT in POSTMAN
 
 ![rested](./src/img/expressvalidator_check1.gif)
+
+#### ALTHOUGH THE ERROR MESSAGE is correct , there is a mistake in the check area:
+
+- REPLACE the .isEmpty() for .notEmpty()
+
+```javascript
+router.post(
+  "/signup",
+  [
+    check("firstName").notEmpty().withMessage("firstName is required"),
+    check("lastName").notEmpty().withMessage("lastName is required"),
+    check("lastName"),
+    check("email").isEmail().withMessage("Valid Email is required"),
+    check("password")
+      .isLength({ min: 6 })
+      .withMessage("Password must be at least 6 character long"),
+  ],
+  signup
+);
+```
+
+- like so:
+
+![rested](./src/img/notEmpty.gif)

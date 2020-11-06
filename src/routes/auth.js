@@ -9,8 +9,8 @@ const router = express.Router();
 router.post(
   "/signup",
   [
-    check("firstName").isEmpty().withMessage("firstName is required"),
-    check("lastName").isEmpty().withMessage("lastName is required"),
+    check("firstName").notEmpty().withMessage("firstName is required"),
+    check("lastName").notEmpty().withMessage("lastName is required"),
     check("lastName"),
     check("email").isEmail().withMessage("Valid Email is required"),
     check("password")
