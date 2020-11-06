@@ -1,6 +1,6 @@
 // IMPORTS from the schema inside the MODELS
 const User = require("../models/user");
-const { validationResult } = require("express-validator");
+// const { validationResult } = require("express-validator");
 //
 //  TOKEN related
 const jwt = require("jsonwebtoken");
@@ -15,8 +15,8 @@ const jwt = require("jsonwebtoken");
 //
 
 exports.signup = (req, res) => {
-  const errors = validationResult(req);
-  return res.status(400).json({ errors: errors.array() });
+  // const errors = validationResult(req);
+  // return res.status(400).json({ errors: errors.array() });
   //
   //
   // the User is the imported data from the schema

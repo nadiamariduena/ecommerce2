@@ -2164,3 +2164,39 @@ router.post(
 - like so:
 
 ![rested](./src/img/notEmpty.gif)
+
+<br>
+
+#### DONT REPEAT YOURSELF 🤚
+
+<br>
+
+##### FOR THIS REASONS WE ARE GOING TO REMOVE THE FOLLOWING AND ADD IT INTO A new FOLDER that will contain just the VALIDATORS
+
+- create a new folder in the src
+
+- the folder will be named: validators
+
+- INSIDE the validators , create a file called: auth.js
+
+- INSIDE THE auth.js/VALIDATORS add the following:
+
+```javascript
+// COPY the check[ ] data inside the auth.js /ROUTES and paste it inside the auth.js/VALIDATORS
+
+exports.validateRequest = [
+  check("firstName").notEmpty().withMessage("firstName is required"),
+  check("lastName").notEmpty().withMessage("lastName is required"),
+  check("lastName"),
+  check("email").isEmail().withMessage("Valid Email is required"),
+  check("password")
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 character long"),
+];
+```
+
+<br>
+
+##### CLICK ON THE IMAGE TO CHECK THE PROCESS:
+
+[<img src="./src/img/validators_process.gif">](https://www.youtube.com/watch?v=FCog1nieqQ8)
