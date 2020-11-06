@@ -1999,7 +1999,7 @@ app.listen(process.env.PORT, () => {
 <br>
 <br>
 
-##  :construction: THE END OF USER AND ADMIN authentication , SIGNIN / SIGNUP  :construction:
+## :construction: THE END OF USER AND ADMIN authentication , SIGNIN / SIGNUP :construction:
 
 <br>
 <hr>
@@ -2008,7 +2008,7 @@ app.listen(process.env.PORT, () => {
 <br>
 <br>
 
-#  :golf:  EXPRESS VALIDATOR  :golf:
+# :golf: EXPRESS VALIDATOR :golf:
 
 #### What is express validator?
 
@@ -2022,10 +2022,20 @@ app.listen(process.env.PORT, () => {
 
 - An express middleware for Caja-HTML-Sanitizer, which wraps Google Caja sanitizer. A useful complement to the express-validator -- to fill a gap now that XSS sanitization support has been removed from that module's parent node-validator
 
-###### ABOUT EXPRESS VALIDATOR :
+#### ABOUT EXPRESS VALIDATOR :
 
-[READ MORE](https://express-validator.github.io/docs/)
+[read more](https://express-validator.github.io/docs/)
+
 <br>
+
+#### Validation middlewares
+
+- These methods are all available via require('express-validator').
+
+- check([field, message])
+
+[read more](https://express-validator.github.io/docs/check-api.html)
+
 <br>
 
 ### START by requiring the "Express Validator"
