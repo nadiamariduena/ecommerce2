@@ -2244,3 +2244,81 @@ exports.isRequestValidated = (req, res, next) => {
 //
 //
 ```
+
+<br>
+<br>
+<br>
+<br>
+<hr>
+<br>
+
+## AFTER OBTAINING THE RESULT "change" THE FOLLOWING:
+
+<br>
+
+##### CLICK ON THE IMAGE TO FOLLOW THE STEPS:
+
+[<img src="./src/img/change_validateRequest_for_validateSignupRequest.jpg">](https://www.youtube.com/watch?v=uLFdDOzJhqI)
+
+- CHANGE validateRequest for validateSignupRequest
+
+- DUPLICATE validateSignupRequest and delete this:
+
+```javascript
+check("firstName").notEmpty().withMessage("firstName is required"),
+  check("lastName").notEmpty().withMessage("lastName is required"),
+  check("lastName"),
+```
+
+<br>
+<br>
+
+#### the validators/auth.js should look like this:
+
+```javascript
+const { check, validationResult } = require("express-validator");
+//
+//
+//
+//  *****  VALIDATE SIGNUP REQUEST ***
+//  check the routes/ auth.js and the admin/auth.js
+//
+exports.validateSignupRequest = [
+  check("firstName").notEmpty().withMessage("firstName is required"),
+  check("lastName").notEmpty().withMessage("lastName is required"),
+  check("lastName"),
+  check("email").isEmail().withMessage("Valid Email is required"),
+  check("password")
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 character long"),
+];
+//
+//
+//
+//  *****  VALIDATE SIGNIN REQUEST ***
+//
+//
+exports.validateSigninRequest = [
+  check("email").isEmail().withMessage("Valid Email is required"),
+  check("password")
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 character long"),
+];
+//
+// isRequestValidated  is a MIDDLEWARE
+//  *****  IS REQUEST VALIDATED ***
+//
+//
+exports.isRequestValidated = (req, res, next) => {
+  const errors = validationResult(req);
+  // if errors are greater > than 0 it means we have errors and if so
+  //   send status 400 which is an ERROR
+  if (errors.array().length > 0) {
+    return res.status(400).json({ error: errors.array()[0].msg });
+    // send only 1 error: json({ error:
+    // but if the user  do MORE mistakes, then it will send another error
+    // errors.array()[0].msg });
+  }
+  next();
+};
+```
