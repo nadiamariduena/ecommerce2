@@ -2200,3 +2200,47 @@ exports.validateRequest = [
 ##### CLICK ON THE IMAGE TO CHECK THE PROCESS:
 
 [<img src="./src/img/validators_process.gif">](https://www.youtube.com/watch?v=FCog1nieqQ8)
+
+#### auth.js/validators
+
+```javascript
+const { check, validationResult } = require("express-validator");
+
+exports.validateRequest = [
+  check("firstName").notEmpty().withMessage("firstName is required"),
+  check("lastName").notEmpty().withMessage("lastName is required"),
+  check("lastName"),
+  check("email").isEmail().withMessage("Valid Email is required"),
+  check("password")
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 character long"),
+];
+//
+//
+// isRequestValidated  is a MIDDLEWARE
+exports.isRequestValidated = (req, res, next) => {
+  // this is going to return an array of errors
+  const errors = validationResult(req);
+  // if errors are greater > than 0 it means we have errors and if so
+  //   send status 400 which is an ERROR
+  if (errors.array().length > 0) {
+    return res.status(400).json({ error: errors.array()[0].msg });
+    // send only 1 error: json({ error:
+    // but if the user  do MORE mistakes, then it will send another error
+    // errors.array()[0].msg });
+  }
+  next();
+};
+
+/*
+   validationResult(req) ,this is what you added 
+   inside the controller/auth.js:
+
+        const errors = validationResult(req);
+  return res.status(400).json({ errors: errors.array() });
+
+   and that you hided because your were repeating yourself
+  */
+//
+//
+```
