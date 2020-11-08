@@ -2420,7 +2420,61 @@ app.use(express.json());
 
 ```javascript
 const mongoose = require("mongoose");
-
 ```
 
-##### CREATE THE SCHEMA 
+<br>
+
+##### CREATE THE SCHEMA
+
+- INSIDE THE category.js add the following:
+
+```javascript
+// -----------------------------------------
+//
+//              CATEGORY SCHEMA
+//
+// -----------------------------------------
+//
+const categorySchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    parentId: {
+      type: String,
+    },
+  },
+  { timestamps: true }
+);
+
+module.exports = mongoose.model("Category", categorySchema);
+```
+
+<br>
+<br>
+
+### CREATE ROUTES FOR THE "Category"
+
+- GO TO THE ROUTES FOLDER
+
+###### CATEGORY is a part of BOTH " user as well as admin"
+
+##### FOR USERS
+
+- the user they need to explore the category, click on them and explore the dIfferent kind of products.
+
+##### FOR ADMINS
+
+- the ADMIN will create the category and also they will explore
+  and they might delete some categories
+
+<br>
+
+#### INSIDE THE ROUTES , create the "category.js" file
