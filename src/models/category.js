@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 //
 // -----------------------------------------
 //
+// DONT FORGET TO INSTALL and IMPORT , the "slugify" library inside the category.js/routes
+// npm install --save slugify
 const categorySchema = new mongoose.Schema(
   {
     name: {

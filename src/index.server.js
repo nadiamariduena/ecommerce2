@@ -4,11 +4,13 @@ const env = require("dotenv");
 // const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-//
+//---------------
 // ROUTES
 const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin/auth");
-//
+// categories
+const categoryRoutes = require("./routes/category");
+//----------------
 //  environment variable or you can say constants
 env.config();
 //
@@ -43,12 +45,15 @@ stream and exposes it on req. body . The middleware was a part of Express.
 js earlier but now you have to install it separately. This body-parser module parses
  the JSON, buffer, string and URL encoded data submitted using HTTP POST request.
 */
-
+//----------------
 app.use("/api", authRoutes);
 // the above is linked to this:
 // const userRoutes = require("./routes/user");
 //    A D M I N .. ROUTES
 app.use("/api", adminRoutes);
+//    C A T E G O R Y .. ROUTES
+app.use("/api", categoryRoutes);
+//----------------
 
 app.listen(process.env.PORT, () => {
   console.log(`server is running in PORT ${process.env.PORT}`);

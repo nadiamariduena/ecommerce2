@@ -2458,23 +2458,97 @@ module.exports = mongoose.model("Category", categorySchema);
 ```
 
 <br>
+
+##### WHAT IS A SLUG ?
+
+<p>A slug is a human-readable, unique identifier, used to identify a resource instead of a less human-readable identifier like an id. You use a slug when you want to refer to an item while preserving the ability to see, at a glance, what the item is.</p>
+
+> " they’ve added a short uuid to the end of it. The only reason I’d think of for doing that is if a user was able to write two stories with the same title "
+
+<p>Typically slugs are used when making search-engine optimised urls, so for example the url of this post is https://medium.com/@davesag/whats-a-slug-f7e74b6c23e0. There are actually two slugs in that url, my username, @davesag and the slug for this specific post, whats-a-slug-f7e74b6c23e0. Of that the whats-a-slug part comes from the title, and, for reasons only known to the people at Medium, they’ve added a short uuid to the end of it. The only reason I’d think of for doing that is if a user was able to write two stories with the same title, so I guess that can happen.
+</p>
+<br>
+[article by Dave Sag](https://itnext.io/whats-a-slug-f7e74b6c23e0)
+<br>
 <br>
 
-### CREATE ROUTES FOR THE "Category"
+## CREATE ROUTES FOR THE "Category"
 
 - GO TO THE ROUTES FOLDER
 
-###### CATEGORY is a part of BOTH " user as well as admin"
+_CATEGORY is a part of BOTH " user as well as admin"_
 
 ##### FOR USERS
 
-- the user they need to explore the category, click on them and explore the dIfferent kind of products.
+- the user, they can explore the category, click on them and explore the dIfferent kind of products.
 
 ##### FOR ADMINS
 
 - the ADMIN will create the category and also they will explore
-  and they might delete some categories
+  and they might delete some categories.
 
 <br>
 
-#### INSIDE THE ROUTES , create the "category.js" file
+#### INSIDE THE ROUTES , create the "category.js" file and add the following:
+
+```javascript
+const express = require("express");
+//HERE we are going to import the category schema
+const Category = require("../models/category");
+const slugify = require("slugify");
+const router = express.Router();
+//
+//
+//           ****    C . A . T . E . G . O . R . Y   ****
+//
+//
+// HERE YOU ARE GOING TO SPECIFY THE API
+// /category/create
+router.post("/category/create", (req, res) => {
+  const categoryObj = {
+    name: req.body.name,
+    slug: slugify(req.body.name),
+  };
+  //if, the req.body.parentId exists, then we'll use the category object:  categoryObj.parentId
+  if (req.body.parentId) {
+    categoryObj.parentId = req.body.parentId;
+  }
+  //   else: it will not be available, so if the categoryObj.parentId dont exist.
+  const cat = new Category(categoryObj);
+  cat.save((error, category) => {
+    if (error) return res.status(400).json({ error });
+    if (category) {
+      return res.status(201).json({ category });
+    }
+  });
+});
+
+module.exports = router;
+```
+
+#### NOW go to the index.server.js and add this:
+
+```javascript
+//---------------
+// ROUTES
+
+// categories
+const categoryRoutes = require("./routes/category");
+//----------------
+
+//    C A T E G O R Y .. ROUTES
+app.use("/api", categoryRoutes);
+//----------------
+```
+
+<br>
+
+#### CREATE the category on POSTMAN
+
+![rested](./src/img/category-creation-postman.gif)
+
+<br>
+
+##### RESULT CLUSTER :orange:
+
+![rested](./src/img/category-cration-cluster.gif)
