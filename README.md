@@ -2247,9 +2247,7 @@ exports.isRequestValidated = (req, res, next) => {
 
 <br>
 <br>
-<br>
-<br>
-<hr>
+
 <br>
 
 ## AFTER OBTAINING THE RESULT "change" THE FOLLOWING:
@@ -2322,3 +2320,107 @@ exports.isRequestValidated = (req, res, next) => {
   next();
 };
 ```
+
+<br>
+<br>
+<br>
+<br>
+<hr>
+<br>
+
+## CATEGORIES and SUB CATEGORIES (schema for the products)
+
+<br>
+
+### But before :
+
+- INSIDE THE SRC FOLDER, CREATE A NEW FOLDER called common-middleware
+
+- INSIDE THE common-middleware folder add a file called: index.js
+
+-INSIDE THE index.js/common-middleware paste this 2 middlewares, from the CONTROLLER FOLDER.
+
+```javascript
+//            U . S . E . R
+//
+// -------------------------------------------
+//
+//           VERIFY A TOKEN
+//             middleware
+//
+// -------------------------------------------
+
+exports.requireSignin = (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  // [1] is going to grab the token from the words "Bearer token"
+  const user = jwt.verify(token, process.env.JWT_SECRET);
+  req.user = user;
+  // so that i can access that user in the next function
+  next();
+  // jwt.verify();
+  // with the above you decode the TOKEN
+};
+
+//            A . D .M . I . N
+//
+// -------------------------------------------
+//
+//           VERIFY A TOKEN
+//             middleware
+//
+// -------------------------------------------
+
+exports.requireSignin = (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  // [1] is going to grab the token from the words "Bearer token"
+  const user = jwt.verify(token, process.env.JWT_SECRET);
+  req.user = user;
+  // so that i can access that user in the next function
+  next();
+  // jwt.verify();
+  // jwt.decode);
+  // with the above you decode the TOKEN
+};
+```
+
+#### AFTER YOU DO THE CHANGES, THE SERVER HAS TO BE WORKING PERFECTLY LIKE SO:
+
+```javascript
+server is running in PORT 2000
+Data base connnnnected :)
+```
+
+<br>
+
+#### GO TO THE index.server.js AND REPLACE THE "BODY PARSER"
+
+- REPLACE THE OLD BODY PARSER FOR THE EXPRESS
+
+```javascript
+// REMOVE THE FOLLOWING
+const bodyParser = require("body-parser");
+app.use(bodyParser());
+
+// AND ADD THE FOLLOWING INSTEAD
+
+app.use(express.json());
+```
+
+<br>
+
+### :corn: :corn: GO TO THE MODELS and create a new file where you will add the following:
+
+<br>
+
+##### CATEGORIES and SUB CATEGORIES (schema for the products)
+
+- INSIDE THE MODELS add the category.js file
+
+- INSIDE THE category.js , import the following:
+
+```javascript
+const mongoose = require("mongoose");
+
+```
+
+##### CREATE THE SCHEMA 
