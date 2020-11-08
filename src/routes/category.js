@@ -13,6 +13,7 @@ const router = express.Router();
 router.post("/category/create", (req, res) => {
   const categoryObj = {
     name: req.body.name,
+    // whatever the user is going to type, is going to be slugify, check the video in the readme
     slug: slugify(req.body.name),
   };
   //if, the req.body.parentId exists, then we'll use the category object:  categoryObj.parentId

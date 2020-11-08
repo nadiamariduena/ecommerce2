@@ -2467,8 +2467,26 @@ module.exports = mongoose.model("Category", categorySchema);
 
 <p>Typically slugs are used when making search-engine optimised urls, so for example the url of this post is https://medium.com/@davesag/whats-a-slug-f7e74b6c23e0. There are actually two slugs in that url, my username, @davesag and the slug for this specific post, whats-a-slug-f7e74b6c23e0. Of that the whats-a-slug part comes from the title, and, for reasons only known to the people at Medium, they’ve added a short uuid to the end of it. The only reason I’d think of for doing that is if a user was able to write two stories with the same title, so I guess that can happen.
 </p>
+
 <br>
+
 [article by Dave Sag](https://itnext.io/whats-a-slug-f7e74b6c23e0)
+
+<br>
+
+##### EXAMPLE to remove:
+
+- Remove
+  `For example, to remove *+~.()'"!:@ from the result slug, you can use slugify('..', {remove: /[*+~.()'"!:@]/g}).`
+
+[MORE slugify](https://www.npmjs.com/package/slugify)
+
+<br>
+
+### video of SLUGIFY works:
+
+[Create a safe and user friendly URL with slugify](https://youtu.be/XPGOkxExvMU)
+
 <br>
 <br>
 
@@ -2549,6 +2567,6 @@ app.use("/api", categoryRoutes);
 
 <br>
 
-##### RESULT CLUSTER :orange:
+##### RESULT CLUSTER :
 
 ![rested](./src/img/category-cration-cluster.gif)
