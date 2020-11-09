@@ -3,10 +3,14 @@ const { signup, signin } = require("../../controller/admin/auth");
 const {
   validateSignupRequest,
   isRequestValidated,
-  validateSigninRequest
+  validateSigninRequest,
 } = require("../../validators/auth");
 const router = express.Router();
 
+//
+//
+//
+//                              ****      A . D . M . I . N      ****
 //
 // the ROUTES are the box receiver of the MODELS data schemas
 //

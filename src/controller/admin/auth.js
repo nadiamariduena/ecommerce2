@@ -91,8 +91,6 @@ exports.signin = (req, res) => {
           message: "Invalid Password",
         });
       }
-
-      // -- ° --
     } else {
       return res.status(400).json({ message: "Something went WRONG" });
     }
@@ -104,4 +102,3 @@ exports.signin = (req, res) => {
 //
 
 //
-

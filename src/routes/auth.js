@@ -3,11 +3,16 @@ const { signup, signin } = require("../controller/auth");
 const {
   validateSignupRequest,
   isRequestValidated,
-  validateSigninRequest
+  validateSigninRequest,
 } = require("../validators/auth");
 
 const router = express.Router();
 
+//
+//
+//
+//                              ****      A . D . M . I . N      ****
+//
 // isRequestValidated  is a MIDDLEWARE
 
 //

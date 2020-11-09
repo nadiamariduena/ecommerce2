@@ -2,7 +2,15 @@ const { check, validationResult } = require("express-validator");
 //
 //
 //
-//  *****  VALIDATE SIGNUP REQUEST ***
+//-------------------------------------------------------------------------------
+//
+//                                   VALIDATE
+//
+//            ****      .S .I .G .N    U.P   R .E .Q .U .E .S .T   ****
+//
+//
+//-------------------------------------------------------------------------------
+//
 //  check the routes/ auth.js and the admin/auth.js
 //
 exports.validateSignupRequest = [
@@ -17,8 +25,15 @@ exports.validateSignupRequest = [
 //
 //
 //
-//  *****  VALIDATE SIGNIN REQUEST ***
 //
+//-------------------------------------------------------------------------------
+//
+//                                   VALIDATE
+//
+//            ****      .S .I .G .N    I.N   R .E .Q .U .E .S .T   ****
+//
+//
+//-------------------------------------------------------------------------------
 //
 exports.validateSigninRequest = [
   check("email").isEmail().withMessage("Valid Email is required"),
@@ -26,11 +41,42 @@ exports.validateSigninRequest = [
     .isLength({ min: 6 })
     .withMessage("Password must be at least 6 character long"),
 ];
+/*
+
+
+
+
+
+*/
 //
-// isRequestValidated  is a MIDDLEWARE
-//  *****  IS REQUEST VALIDATED ***
+//-------------------------------------------------------------------------------
+//
+//                      isRequestValidated  is a MIDDLEWARE
+//
+//                       ****  IS REQUEST VALIDATED   ****
 //
 //
+//-------------------------------------------------------------------------------
+//
+//
+//
+exports.isRequestValidated = (req, res, next) => {
+  const errors = validationResult(req);
+  if (errors.array().length > 0) {
+    return res.status(400).json({ error: errors.array()[0].msg });
+  }
+  next();
+};
+
+/*
+
+
+
+
+             ****     C O M M E N T S    ****
+
+
+
 exports.isRequestValidated = (req, res, next) => {
   // this is going to return an array of errors
   const errors = validationResult(req);
@@ -42,5 +88,24 @@ exports.isRequestValidated = (req, res, next) => {
     // but if the user  do MORE mistakes, then it will send another error
     // errors.array()[0].msg });
   }
+    // without the next() it will send an error
   next();
 };
+
+
+// 
+// --------------------------------------------------------------------
+// 
+                          validationResult(req);
+
+
+
+
+          Extracts the validation errors from a request and makes 
+          them available in a Result object.
+
+          
+          https://express-validator.github.io/docs/validation-result-api.html
+
+
+*/

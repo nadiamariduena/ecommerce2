@@ -2688,3 +2688,48 @@ const slugify = require("slugify");
 <br>
 
 ##### NOW go to postman again and type a new category
+
+<br>
+<br>
+<hr>
+
+##### NOW WRITE THE function to fetch the CATEGORY
+
+```javascript
+//
+// FETCH or .getCategories
+
+exports.getCategories = (req, res) => {
+  // if you pass an empty object like so: .find({})  its going to  retrieve/GET all the data
+  Category.find({}).exec((error, categories) => {
+    if (error) return res.status(400).json({ error });
+    //
+    //
+    //
+    if (categories) {
+      res.status(200).json({ categories });
+    }
+  });
+};
+```
+
+##### Now go to the category.js/ROUTES and import the fetched category
+
+```javascript
+const express = require("express");
+//HERE we are going to import the category schema
+const { addCategory, getCategories } = require("../controller/category");
+//
+const router = express.Router();
+//
+//
+//           ****    C . A . T . E . G . O . R . Y   ****
+//
+//
+//
+// /category/create
+router.post("/category/create", addCategory);
+router.post("/category/getcategory", getCategories);
+
+module.exports = router;
+```

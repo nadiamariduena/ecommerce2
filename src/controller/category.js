@@ -6,6 +6,52 @@ exports.addCategory = (req, res) => {
     name: req.body.name,
     slug: slugify(req.body.name),
   };
+  if (req.body.parentId) {
+    categoryObj.parentId = req.body.parentId;
+  }
+  const cat = new Category(categoryObj);
+  //
+  //   ------------
+  cat.save((error, category) => {
+    if (error) return res.status(400).json({ error });
+
+    if (category) {
+      // if there is no error, it will add the category you added
+      return res.status(201).json({ category });
+      //   201 success
+    }
+  });
+  //   ------------
+  //
+};
+//   -------------------------------------------------
+//
+// FETCH or .getCategories
+
+exports.getCategories = (req, res) => {
+  // if you pass an empty object like so: .find({})  its going to  retrieve/GET all the data
+  Category.find({}).exec((error, categories) => {
+    if (error) return res.status(400).json({ error });
+    //
+    //
+    //
+    if (categories) {
+      res.status(200).json({ categories });
+    }
+  });
+};
+
+/*
+
+
+
+
+
+exports.addCategory = (req, res) => {
+  const categoryObj = {
+    name: req.body.name,
+    slug: slugify(req.body.name),
+  };
   //if, the req.body.parentId exists,
   // then we'll use the category object:  categoryObj.parentId
   if (req.body.parentId) {
@@ -27,3 +73,16 @@ exports.addCategory = (req, res) => {
   //   ------------
   //
 };
+
+
+
+
+
+
+
+
+
+
+
+
+*/
