@@ -2748,7 +2748,7 @@ module.exports = router;
 <br>
 <br>
 
-#  A D M I N  :closed_lock_with_key: C A T E G O R Y
+# A D M I N :closed_lock_with_key: C A T E G O R Y
 
 <br>
 <br>
@@ -3035,3 +3035,46 @@ exports.requireSignin = (req, res, next) => {
 - (click on the image to watch the video)
 
 [<img src="./src/img/SOLUTION_error_ADMIN_auth_create_category.jpg">](https://www.youtube.com/watch?v=JAODSEv45wE)
+
+- ERROR 2 was due to the next()
+
+- the next() has to be in position to go to the next function, otherwise it will block or will not work correctly
+
+##### THE WRONG WAY of positioning the next()
+
+```javascript
+exports.requireSignin = (req, res, next) => {
+  //
+  // INDEX.JS /COMMON-MIDDLEWARE
+
+  if (req.headers.authorization) {
+    const token = req.headers.authorization.split(" ")[1];
+
+    const user = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = user;
+
+    next(); // THE REASON OF THE 2 ERROR, the next() is supposed to go to the next and if you put it here, it will not bother about the     return res.status(400).json({ message: "Authorization Required" });  , so you have to put it after
+  } else {
+    return res.status(400).json({ message: "Authorization Required" });
+  }
+  // next(); // HERE !!!!!!!!
+};
+```
+
+#### where it should be
+
+```javascript
+    // next();  // THE REASON OF THE 2 ERROR, the next() is supposed to go to the next and if you put it here, it will not bother about the     return res.status(400).json({ message: "Authorization Required" });  , so you have to put it after
+  } else {
+    return res.status(400).json({ message: "Authorization Required" });
+  }
+  next(); // HERE !!!!!!!!
+};
+```
+
+[<img src="./src/img/error2_admin_categories.jpg">](https://www.youtube.com/watch?v=fTWdlxCc6XM)
+
+- As you can see, the category "plantitas" was created but
+  was created with an error, but once you position the next( ) after the if/else statement you will see that the category was created without any error
+
+![rested](./src/img/admin_category_created_succesfully.jpg)

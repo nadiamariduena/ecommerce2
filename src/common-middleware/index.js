@@ -50,12 +50,16 @@ exports.requireSignin = (req, res, next) => {
     const user = jwt.verify(token, process.env.JWT_SECRET);
     req.user = user;
     // so that i can access that user in the next function
-    next();
+
     // jwt.verify();
     // jwt.decode);
     // with the above you decode the TOKEN
+
+    // next();  // THE REASON OF THE 2 ERROR, the next() is supposed to go to the next and if you put it here, it will not bother about the     return res.status(400).json({ message: "Authorization Required" });  , so you have to put it after
+  } else {
+    return res.status(400).json({ message: "Authorization Required" });
   }
-  return res.status(400).json({ message: "Authorization Required" });
+  next();
 };
 
 /*
