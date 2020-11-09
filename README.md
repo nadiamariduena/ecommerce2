@@ -2715,6 +2715,8 @@ exports.getCategories = (req, res) => {
 };
 ```
 
+<br>
+
 ##### Now go to the category.js/ROUTES and import the fetched category
 
 ```javascript
@@ -2741,3 +2743,178 @@ module.exports = router;
 ##### GO TO POSTMAN AND MAKE A GET REQUEST
 
 ![rested](./src/img/showcategories.gif)
+
+<br>
+<br>
+
+#### CREATE THE AUTHENTICATION (only logged in users"admin") CAN CREATE A CATEGORY
+
+<br>
+
+<p>ONLY THE ADMIN HAVE SOME PERMISSION TO WRITE THE CATEGORIES</p>
+
+- GO TO THE COMMON-MIDDLEWARE
+
+- inside the index.js add the following:
+
+ <br>
+
+```javascript
+//
+//      A D M I N  -- C A T E G O R Y
+//
+// -------------------------------------------
+//
+//  ONLY LOGGED IN ADMIN CAN CREATE CATEGORIES
+//             middleware
+//
+// -------------------------------------------
+//
+exports.adminMiddleware = (req, res, next) => {
+  // NO PERMISSION if its not an ADMIN
+  // if the user is not !== an admin , it will launch a res.status 400
+  if (req.user.role !== "admin") {
+    return res.status(400).json({ message: "Access denied" });
+  }
+  next();
+};
+```
+
+<br>
+
+##### NOW GO TO THE CATEGORY ROUTES and add the "requireSignin" function.
+
+- THIS FUNCTION IS GOING TO CHECK THE ROLE OF THE USER, AND DEPENDING ON THAT , it will allow the user(ADMIN) to WRITE categories.
+
+<br>
+
+```javascript
+// NEW to add
+const { requireSignin } = require("../common-middleware/index");
+
+//
+router.post("/category/create", requireSignin, addCategory);
+```
+
+#### HOW IT S GOING TO CHECK IF THE USER ITS AN ADMIN?
+
+- IT WILL GO TO THE index.js/ COMMON-MIDDLEWARE and will verify the user inside the following function:
+
+```javascript
+// index.js/ COMMON-MIDDLEWARE
+exports.requireSignin = (req, res, next) => {
+  const token = req.headers.authorization.split(" ")[1];
+  // BELOW: its verifying the user
+  const user = jwt.verify(token, process.env.JWT_SECRET);
+  // BELOW is attaching the user
+  req.user = user;
+  // after verifying and attaching the user, it will forward the REQUEST to the NEXT() function
+  next();
+  // The NEXT() function will be in the category.js/routes , and the specific function will be adminMiddleware that is back inside the: index.js/ COMMON-MIDDLEWARE
+};
+```
+
+<br>
+
+##### SO AFTER being checked there it will go back to the category.js/routes , and there you will add this:
+
+- SO WHEN the next() send the request to the next function which is inside the category.js/routes, this function is going to be checked inside the index.js/ COMMON-MIDDLEWARE
+
+```javascript
+// NEW TO ADD ... adminMiddleware
+const {
+  requireSignin,
+  adminMiddleware,
+} = require("../common-middleware/index");
+//
+//
+router.post("/category/create", requireSignin, adminMiddleware, addCategory);
+```
+
+#### WHICH IS the function we just created :
+
+```javascript
+exports.adminMiddleware = (req, res, next) => {
+  // NO PERMISSION if its not an ADMIN
+  // if the user is not !== an admin , it will launch a res.status 400
+  if (req.user.role !== "admin") {
+    return res.status(400).json({ message: "Access denied" });
+  }
+  next();
+};
+```
+
+<br>
+
+#### IF the user is the "ADMIN", then it will execute this function "addCategory" which is the function that allows to CREATE A CATEGORY :
+
+```javascript
+// category.js /routes
+const {
+  requireSignin,
+  adminMiddleware,
+} = require("../common-middleware/index");
+//
+//
+router.post("/category/create", requireSignin, adminMiddleware, addCategory);
+
+// category.js/controller
+// THE addCategory FUNCTION
+
+exports.addCategory = (req, res) => {
+  const categoryObj = {
+    name: req.body.name,
+    slug: slugify(req.body.name),
+  };
+  if (req.body.parentId) {
+    categoryObj.parentId = req.body.parentId;
+  }
+  const cat = new Category(categoryObj);
+  //
+  //   ------------
+  cat.save((error, category) => {
+    if (error) return res.status(400).json({ error });
+
+    if (category) {
+      // if there is no error, it will add the category you added
+      return res.status(201).json({ category });
+      //   201 success
+    }
+  });
+  //   ------------
+  //
+};
+```
+
+<br>
+
+##### NOW GO TO POSTMAN and check
+
+![rested](./src/img/header_admin_authentication_create_category.jpg)
+
+- AS YOU CAN SEE it shows an error
+
+- The error is related to the headers
+
+- that s why you need to put this code inside an if statement:
+
+```javascript
+exports.requireSignin = (req, res, next) => {
+  //
+  // --------------- if statement  ***
+  // if this exists and its not undefined: if (req.headers.authorization)
+  //  then execute the code inside the if statement
+  if (req.headers.authorization) {
+    const token = req.headers.authorization.split(" ")[1];
+    // [1] is going to grab the token from the words "Bearer token"
+    const user = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = user;
+    // so that i can access that user in the next function
+    next();
+    // jwt.verify();
+    // jwt.decode);
+    // with the above you decode the TOKEN
+  }
+  // ---------------  if statement  ***
+};
+```
