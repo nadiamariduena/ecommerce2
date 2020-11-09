@@ -2687,11 +2687,13 @@ const slugify = require("slugify");
 
 <br>
 
-##### NOW go to postman again and type a new category
+- NOW go to postman again and type a new category
 
 <br>
 <br>
 <hr>
+<br>
+<br>
 
 ##### NOW WRITE THE function to fetch the CATEGORY
 
@@ -2729,7 +2731,13 @@ const router = express.Router();
 //
 // /category/create
 router.post("/category/create", addCategory);
-router.post("/category/getcategory", getCategories);
+router.get("/category/getcategory", getCategories);
 
 module.exports = router;
 ```
+
+<br>
+
+##### GO TO POSTMAN AND MAKE A GET REQUEST
+
+![rested](./src/img/showcategories.gif)
