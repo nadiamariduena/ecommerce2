@@ -28,6 +28,8 @@ exports.requireSignin = (req, res, next) => {
 
 */
 
+const jwt = require("jsonwebtoken");
+
 //            A . D .M . I . N
 //
 // -------------------------------------------
@@ -53,6 +55,7 @@ exports.requireSignin = (req, res, next) => {
     // jwt.decode);
     // with the above you decode the TOKEN
   }
+  return res.status(400).json({ message: "Authorization Required" });
 };
 
 /*

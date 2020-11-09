@@ -2746,8 +2746,14 @@ module.exports = router;
 
 <br>
 <br>
+<br>
 
-#### CREATE THE AUTHENTICATION (only logged in users"admin") CAN CREATE A CATEGORY
+#  A D M I N  :closed_lock_with_key: C A T E G O R Y
+
+<br>
+<br>
+
+##### CREATE THE AUTHENTICATION (only logged in users"admin") CAN CREATE A CATEGORY
 
 <br>
 
@@ -2898,6 +2904,8 @@ exports.addCategory = (req, res) => {
 
 - that s why you need to put this code inside an if statement:
 
+### IF
+
 ```javascript
 exports.requireSignin = (req, res, next) => {
   //
@@ -2918,3 +2926,112 @@ exports.requireSignin = (req, res, next) => {
   // ---------------  if statement  ***
 };
 ```
+
+### ELSE
+
+```javascript
+return res.status(400).json({ message: "Authorization Required" });
+```
+
+<br>
+
+#### NOW TEST IT in POSTMAN
+
+![rested](./src/img/Authorization_required_admin_categories.jpg)
+
+- IF YOU DELETED THE ADMIN USER OR FORGOT THE PASSWORD, you will have to create another ADMIN USER
+
+- IF YOU CHANGED the PORT, you will have to change that in the url
+
+```javascript
+// URL BEFORE , you should have spaces when testing it in postman
+localhost: 2000 / api / admin / signup;
+// URL AFTER
+localhost: 8000 / api / admin / signup;
+```
+
+- IF YOU HAVE OTHER TABS with the same path like so, it wont work, so you will have to close them all:
+
+`/admin/signup`
+
+<!--
+
+{
+     "firstName": "newAdmin",
+    "lastName": "molamola",
+    "email": "molamola@domain.com",
+    "password": "12351nola"
+} -->
+
+<br>
+
+#### AFTER ALL THIS, log you in with this:
+
+```javascript
+    "email": "molamola@domain.com",
+    "password": "12351nola"
+```
+
+![rested](./src/img/signinin_admin_token.gif)
+
+#### COPY THE TOKEN thats is going to be available for 1 hour
+
+![rested](./src/img/signinin_admin_token.gif)
+
+### AFTER YOU SIGN IN and that you copy the token, paste the token like so:
+
+- IF a message with "required" shows, sign in again and get the new token
+
+![rested](./src/img/error_jwt_token_admin_category.gif)
+
+###### THERE IS GOING TO be an error linked to the JWT "required"
+
+- add the following:
+
+`const jwt = require("jsonwebtoken");`
+
+- like so:
+
+```javascript
+// index.js / common-middleware FOLDER
+const jwt = require("jsonwebtoken");
+
+//            A . D .M . I . N
+//
+// -------------------------------------------
+//
+//           VERIFY A TOKEN
+//             middleware
+//
+// -------------------------------------------
+
+exports.requireSignin = (req, res, next) => {
+  //
+  //
+  // if this exists and its not undefined: if (req.headers.authorization)
+  //  then execute the code inside the if statement
+  if (req.headers.authorization) {
+    const token = req.headers.authorization.split(" ")[1];
+    // [1] is going to grab the token from the words "Bearer token"
+    const user = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = user;
+    // so that i can access that user in the next function
+    next();
+    // jwt.verify();
+    // jwt.decode);
+    // with the above you decode the TOKEN
+  }
+  return res.status(400).json({ message: "Authorization Required" });
+};
+```
+
+#### CHECK THE VIDEO for more errors
+
+- ERROR 1 (click on the link to watch the video)
+
+[error ADMIN auth | create category](https://www.youtube.com/watch?v=hSfJHcpiFGk)
+
+- ERROR 1 solved (explanation)
+- (click on the image to watch the video)
+
+[<img src="./src/img/SOLUTION_error_ADMIN_auth_create_category.jpg">](https://www.youtube.com/watch?v=JAODSEv45wE)

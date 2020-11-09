@@ -84,9 +84,13 @@ exports.signin = (req, res) => {
       // this authenticate is related to the function inside
       // the user.js /MODELS FOLDER
       if (user.authenticate(req.body.password)) {
-        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-          expiresIn: "1h",
-        });
+        const token = jwt.sign(
+          { _id: user._id},
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "1h",
+          }
+        );
         // THE RES
         const { _id, firstName, lastName, email, role, fullName } = user;
 
