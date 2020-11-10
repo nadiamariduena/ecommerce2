@@ -1,4 +1,4 @@
-### ECOMMERCE2 :baby_chick:
+# ECOMMERCE2 :shopping_cart:
 
 ##### REPEATING the ecommerce project i started 2 days ago
 
@@ -271,20 +271,51 @@ Database connected
 <br>
 <br>
 
-#### CREATE THE SRC folder
+# COMMON QUESTIONS
 
-- src folder
-- inside of it , create:
+#### What is CRUD?
+
+##### Create, Read, Update, and Delete (CRUD) are the four basic functions that models should be able to do, at most.
+
+<p>
+
+When we are building APIs, we want our models to provide
+four basic types of functionality. The model must be able
+to Create, Read, Update, and Delete resources. Computer
+scientists often refer to these functions by the acronym
+CRUD. A model should have the ability to perform at most
+these four functions in order to be complete. If an action
+cannot be described by one of these four operations, then
+it should potentially be a model of its own.
+
+</p>
+
+[what-is-crud ? by CODEACADEMY](https://www.codecademy.com/articles/what-is-crud)
+
+<br>
+<br>
+
+## LET'S START IT 🍨
+
+- CREATE THE src folder
+- inside of it , create the following folders:
 
 ```javascript
+// THIS ARE THE FIRST FOLDERS WE WILL NEED
 1 controller
 2 models
 3 routes
 ```
 
-##### INSIDE of the ROUTES, create the user.js
+<br>
 
-- add the following:
+### INSIDE THE ROUTES folder
+
+- create the user.js:
+
+- import express and express.router
+
+- create the ROUTES
 
 ```javascript
 const express = require("express");
@@ -296,38 +327,35 @@ const router = express.Router();
 //
 router.get("/signin", (req, res, next) => {});
 
-/* 
-
-
-
-*/
-
 router.post("/signup", (req, res, next) => {});
 
 module.exports = router;
 ```
 
 <br>
+
+### ABOUT THE MODULE EXPORTS
+
 <br>
 
-#### THE MODULE EXPORTS (module.exports = router)
-
-<br>
-
-###### EXPORT
+##### EXPORT
 
 - You use the: the module.exports = router , to get the information out
   of this file, so to be shipped to the server.
 
-###### IMPORT
+  `(module.exports = router)`
+
+##### IMPORT
 
 - inside the "server" file you have to import the data from this file here,
   and you will do it like so:
 
-```javascript
-// ROUTES
-const userRoutes = require("./routes/user");
-```
+`const userRoutes = require("./routes/user");`
+
+
+
+<br>
+<br>
 
 ##### AFTER IMPORTING the ROUTES "user.js" data , you have to use it!
 
@@ -347,6 +375,7 @@ app.post("/data", (req, res, next) => {
   });
 });
 ```
+<br>
 
 ##### REPLACE THE DELETED data with this:
 
@@ -362,7 +391,7 @@ app.use("/api", userRoutes);
 
 ##### NOW GO to the MODELS folder and create another user.js , this user.js is different and will serve to build the schemas
 
-- the SCHEMAS are the data structure for out collection
+- the SCHEMAS are the data structure for our collection
 
 ###### BUT BEFORE, check the DIFFERENCES of the exports
 
@@ -373,6 +402,9 @@ app.use("/api", userRoutes);
 const router = express.Router();
 // EXPORTS in Routes
 module.exports = router;
+// 
+// ----------------------------------------------
+// 
 // library / without this the export wont work
 const mongoose = require("mongoose");
 //  EXPORTS in Models
@@ -384,7 +416,9 @@ module.exports = mongoose.model("User");
 // But the User on itself represents the data inside the userSchema and is the User that will be exporting it.
 ```
 
-#### the data inside the user.js "Models" FOLDER
+#### THE user.js CONTENT 
+
+- that is inside the "Models" FOLDER
 
 ```javascript
 const userSchema = new mongoose.Schema(
@@ -3145,11 +3179,11 @@ exports.adminMiddleware = (req, res, next) => {
 
 # :closed_lock_with_key: SUBCATEGORIES :closed_lock_with_key:
 
-- we will start with the category "ELECTRONICS"
+#### we will start with the category "ELECTRONICS"
 
 - the "ELECTRONICS" was the first category we created
 
-- GO TO POSTMAN and type this:
+- GO TO POSTMAN and type this to check all the categories:
 
 `localhost:8000/api/category/getcategory`
 

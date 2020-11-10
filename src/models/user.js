@@ -97,6 +97,8 @@ userSchema.virtual("fullName").get(function () {
 When I query the database, I would like mongoose
 to concatenate firstName and lastName and return a
 field called fullName
+
+READ MORE below
 */
 
 // ------------
@@ -133,4 +135,81 @@ IS THIS MAKING allusion to the whole data of the user?
 
 
 3 when to use arrow functions and when not?
+
+
+                                        ***
+
+                                  COMMON QUESTIONS
+                                  What is CRUD?
+
+Create, Read, Update, and Delete (CRUD) are the four basic 
+functions that models should be able to do, at most.
+
+
+              When we are building APIs, we want our models to provide 
+              four basic types of functionality. The model must be able
+              to Create, Read, Update, and Delete resources. Computer 
+              scientists often refer to these functions by the acronym 
+              CRUD. A model should have the ability to perform at most 
+              these four functions in order to be complete. If an action 
+              cannot be described by one of these four operations, then 
+              it should potentially be a model of its own.
+
+
+                  https://www.codecademy.com/articles/what-is-crud
+
+
+                  In order to build the CRUD methods I will need 
+                  the user._id   as a   'owner' attribute, otherwise any
+                   user could have access to the tasks list, create 
+                   update or delete a task,
+
+
+
+                                      ***
+
+                                  Mongoose Virtuals
+
+
+
+In Mongoose, a virtual is a property that is not stored 
+in MongoDB. Virtuals are typically used for computed properties on documents.
+
+
+Virtual Setters
+You can also use virtuals to set multiple properties at once as an 
+alternative to custom setters on normal properties. For example, 
+suppose you have two string properties: firstName and lastName. You can create a 
+virtual property fullName that lets you set both of these properties at once. 
+
+https://mongoosejs.com/docs/tutorials/virtuals.html
+-------
+
+
+In a setter function, this can be either the document being set 
+or the query being run. If you don't want your setter to run when 
+you call updateOne(), you add an if 
+statement that checks if this is a Mongoose document as shown below.
+
+https://mongoosejs.com/docs/tutorials/getters-setters.html#setters
+
+WHAT IS A QUERY?
+Many Mongoose model functions, like find(), return a Mongoose query. 
+The Mongoose Query class provides a chaining interface for finding, 
+updating, and deleting documents.
+
+const Character = mongoose.model('Character', Schema({
+  name: String,
+  age: Number
+}));
+
+const query = Character.find();
+query instanceof mongoose.Query; // true
+
+// Execute the query
+const docs = await query;
+
+
+
+https://masteringjs.io/tutorials/mongoose/query
 */
