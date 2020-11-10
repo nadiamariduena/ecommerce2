@@ -352,8 +352,6 @@ module.exports = router;
 
 `const userRoutes = require("./routes/user");`
 
-
-
 <br>
 <br>
 
@@ -375,6 +373,7 @@ app.post("/data", (req, res, next) => {
   });
 });
 ```
+
 <br>
 
 ##### REPLACE THE DELETED data with this:
@@ -402,9 +401,9 @@ app.use("/api", userRoutes);
 const router = express.Router();
 // EXPORTS in Routes
 module.exports = router;
-// 
+//
 // ----------------------------------------------
-// 
+//
 // library / without this the export wont work
 const mongoose = require("mongoose");
 //  EXPORTS in Models
@@ -416,9 +415,17 @@ module.exports = mongoose.model("User");
 // But the User on itself represents the data inside the userSchema and is the User that will be exporting it.
 ```
 
-#### THE user.js CONTENT 
+<br>
+<br>
+<br>
+<br>
 
-- that is inside the "Models" FOLDER
+## THE SCHEMA / MODEL
+
+##### INSIDE THE user.js/MODELS folder
+
+- the Schema below will serve to structure the users data
+  <br>
 
 ```javascript
 const userSchema = new mongoose.Schema(
@@ -469,6 +476,8 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 ```
+
+<br>
 
 ##### SET UP THE PASSWORD also in the schema user.js
 
@@ -618,7 +627,9 @@ and is the User that will be exporting it.
   <br>
   <br>
 
-### THE NEXT STEP will be to export the User from models to the user.js in ROUTES
+#### THE NEXT STEP
+
+- WILL be to export the User from models to the user.js in ROUTES
 
 ```javascript
 const express = require("express");
@@ -630,12 +641,6 @@ const User = require("../models/user");
 //
 //
 router.get("/signin", (req, res, next) => {});
-
-/* 
-
-
-
-*/
 
 router.post("/signup", (req, res, next) => {
   // the User with the SCHEMA data
@@ -695,7 +700,7 @@ router.post("/signup", (req, res, next) => {
 module.exports = router;
 ```
 
-### THE ERROR HAD to do with the name of the DATABASE i put inside the .env
+#### THE ERROR HAD to do with the name of the DATABASE i put inside the .env
 
 - Since i am after all starting another ecommerce app with the same info
   i should always change this and of course for that , i have to create a new database name
@@ -722,7 +727,7 @@ MONGO_DB_DATABASE = tomatoes;
 <br>
 <br>
 
-## GO TO the CONTROLLER folder
+#### GO TO the CONTROLLER folder
 
 - and add a user.js file
 - COPY AND PASTE
@@ -810,7 +815,7 @@ router.post("/signup", (req, res, next) => {
 
 <br>
 
-### EXPORT the controllers user.js DATA:
+#### EXPORT the controllers user.js DATA:
 
 ```javascript
 exports.signup = (req, res) => {
@@ -818,7 +823,7 @@ exports.signup = (req, res) => {
 
 <br>
 
-### GO TO THE ROUTES / user.js
+#### GO TO THE ROUTES / user.js
 
 - IMPORT the content of the controllers like so:
 
@@ -833,7 +838,7 @@ const { signup } = require("../controller/user");
 
 <br>
 
-### THE user.js inside the ROUTES should look like this:
+#### THE user.js inside the ROUTES should look like this:
 
 ```javascript
 const express = require("express");
@@ -914,6 +919,8 @@ const jwt = require("jsonwebtoken");
 
 <br>
 
+# TOKEN
+
 ## JSON Web Signature (JWS)
 
 <br>
@@ -941,7 +948,13 @@ const jwt = require("jsonwebtoken");
   whenever a USER log in, he will send a TOKEN every request so we can
   verify fron the BACKEND
 
-  ### THE TOKEN
+    <br>
+
+  #### THE TOKEN
+
+  `const token = jwt.sign({ _id: user._id });`
+
+  <br>
 
 ```javascript
 // -------------------------------------------
@@ -2284,7 +2297,9 @@ exports.isRequestValidated = (req, res, next) => {
 
 <br>
 
-## AFTER OBTAINING THE RESULT "change" THE FOLLOWING:
+#### AFTER OBTAINING THE RESULT
+
+- "change" THE FOLLOWING:
 
 <br>
 
@@ -3109,7 +3124,7 @@ exports.requireSignin = (req, res, next) => {
 [<img src="./src/img/error2_admin_categories.jpg">](https://www.youtube.com/watch?v=fTWdlxCc6XM)
 
 - As you can see, the category "plantitas" was created but
-  was created with an error, but once you position the next( ) after the if/else statement you will see that the category was created without any error
+  was created with an error, but once you position the next( ), after the if/else statement you will see that the category was created without any error.
 
 ![rested](./src/img/admin_category_created_succesfully.jpg)
 
@@ -3179,7 +3194,7 @@ exports.adminMiddleware = (req, res, next) => {
 
 # :closed_lock_with_key: SUBCATEGORIES :closed_lock_with_key:
 
-#### we will start with the category "ELECTRONICS"
+#### Start with the category "ELECTRONICS"
 
 - the "ELECTRONICS" was the first category we created
 
@@ -3187,6 +3202,26 @@ exports.adminMiddleware = (req, res, next) => {
 
 `localhost:8000/api/category/getcategory`
 
-- GET method then click send
+- GET method , then click send
 
 ![rested](./src/img/getcategories_start_subcategories.jpg)
+
+### ADD SUB-CATEGORIES TO THE "electronic" CATEGORY
+
+- COPY THE CODE "\_id" from the electronic category (check the above picture)
+
+` "_id": "5fa7f9a69414f11fb8044e73",`
+
+- This "\_id" will serve as a PARENT id
+
+##### STILL IN POSTMAN
+
+- OPEN another tab
+
+- Click on the image to follow the steps
+
+###### WARNING!!
+
+- DONT use the same CATEGORY name for a SUB category
+
+[<img src="./src/img/creating-subcategory-idparent.jpg">](https://www.youtube.com/watch?v=yLlgVCLhuN4)
