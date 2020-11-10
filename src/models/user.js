@@ -93,6 +93,11 @@ userSchema.virtual("password").set(function (password) {
 userSchema.virtual("fullName").get(function () {
   return `${this.firstName}, ${this.lastName}`;
 });
+/*
+When I query the database, I would like mongoose
+to concatenate firstName and lastName and return a
+field called fullName
+*/
 
 // ------------
 // methods

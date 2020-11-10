@@ -3078,3 +3078,81 @@ exports.requireSignin = (req, res, next) => {
   was created with an error, but once you position the next( ) after the if/else statement you will see that the category was created without any error
 
 ![rested](./src/img/admin_category_created_succesfully.jpg)
+
+<br>
+
+#### NOW ADD THE OTHER MIDDLEWARE FOR THE USER category
+
+- add this inside the index.js/ common-middleware:
+
+```javascript
+exports.userMiddleware = (req, res, next) => {
+  if (req.user.role !== "user") {
+    return res.status(400).json({ message: " User access denied" });
+  }
+  next();
+};
+```
+
+- You can notice that here you add !== "user" instead of admin
+
+##### Both together should look like so:
+
+```javascript
+//      U S E R  -- C A T E G O R Y
+//
+// -------------------------------------------
+//
+//  ONLY LOGGED IN USER CAN CREATE CATEGORIES
+//             middleware
+//                  new *******
+// -------------------------------------------
+//
+exports.userMiddleware = (req, res, next) => {
+  // NO PERMISSION if its not an ADMIN
+  // if the user is not !== an admin , it will launch a res.status 400
+  if (req.user.role !== "user") {
+    return res.status(400).json({ message: " User access denied" });
+  }
+  next();
+};
+//      A D M I N  -- C A T E G O R Y
+//
+// -------------------------------------------
+//
+//  ONLY LOGGED IN ADMIN CAN CREATE CATEGORIES
+//             middleware
+//
+// -------------------------------------------
+//
+exports.adminMiddleware = (req, res, next) => {
+  // NO PERMISSION if its not an ADMIN
+  // if the user is not !== an admin , it will launch a res.status 400
+  if (req.user.role !== "admin") {
+    return res.status(400).json({ message: "Admin Access denied" });
+  }
+  next();
+};
+```
+
+<br>
+<br>
+<br>
+<br>
+<hr>
+<br>
+<br>
+
+# :closed_lock_with_key: SUBCATEGORIES :closed_lock_with_key:
+
+- we will start with the category "ELECTRONICS"
+
+- the "ELECTRONICS" was the first category we created
+
+- GO TO POSTMAN and type this:
+
+`localhost:8000/api/category/getcategory`
+
+- GET method then click send
+
+![rested](./src/img/getcategories_start_subcategories.jpg)

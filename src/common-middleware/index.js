@@ -78,7 +78,14 @@ exports.requireSignin = (req, res, next) => {
 //
 // -------------------------------------------
 //
-exports.userMiddleware = (req, res, next) => {};
+exports.userMiddleware = (req, res, next) => {
+  // NO PERMISSION if its not an ADMIN
+  // if the user is not !== an admin , it will launch a res.status 400
+  if (req.user.role !== "user") {
+    return res.status(400).json({ message: " User access denied" });
+  }
+  next();
+};
 
 /*
 
@@ -100,7 +107,7 @@ exports.adminMiddleware = (req, res, next) => {
   // NO PERMISSION if its not an ADMIN
   // if the user is not !== an admin , it will launch a res.status 400
   if (req.user.role !== "admin") {
-    return res.status(400).json({ message: "Access denied" });
+    return res.status(400).json({ message: "Admin Access denied" });
   }
   next();
 };
