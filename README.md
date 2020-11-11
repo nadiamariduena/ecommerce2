@@ -4,11 +4,13 @@
 
 - THIS PROJECT IS BASED ON A TUTORIAL FROM YOUTUBE (i will be posting the name at the end of it).
 
+- In this project you will find comments, images and videos related to each step, so to index all the new things i learn during the process.
+
 <br>
 
-*REPEATING the e-commerce project i started 2 days ago* 
+_REPEATING the e-commerce project i started 2 days ago_
 
->NOTE: i am not going to explain the set up of the server, as i already did inside the ecommerce1:
+> NOTE: i am not going to explain the set up of the server, as i already did inside the ecommerce1:
 
 [mern-ecommerce1](https://github.com/nadiamariduena/mongo-28-dci/tree/master/personal-lessons-tutorials/mern-ecommerce1)
 
@@ -71,7 +73,7 @@ _FIRST WE WILL START BY STRUCTURING THE USER SCHEMA AND FROM THERE WE WILL SET U
 
 #### CLICK ON THE LINK to unfold the description
 
-[USER AUTHENTICATION PROCESS](src/docs/PRODUCTS.md)
+[USER AUTHENTICATION PROCESS](src/docs/USER_AUTH.md)
 
 <br>
 <hr>
