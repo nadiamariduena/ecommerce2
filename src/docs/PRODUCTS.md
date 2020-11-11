@@ -1,4 +1,4 @@
-## PRODUCTS 🌻
+## PRODUCT 🌻
 
 _ONCE THE CATEGORY AND SUBCATEGORIES HAS BEEN CREATED, YOU CAN PROCEED WITH THE PRODUCTS_
 
@@ -116,7 +116,7 @@ const {
 const router = express.Router();
 //
 //
-//           ****    C . A . T . E . G . O . R . Y   ****
+//                        ****  P R O D U C T     ****
 //
 //
 //
@@ -237,9 +237,10 @@ userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 
 <br>
 
-#### INSTALL "MULTER"
+#### INSTALL THE FOLLOWING
 
-`npm install --save multer`
+- install Multer
+  `npm install --save multer`
 
 ##### What is a multer?
 
@@ -250,3 +251,286 @@ _Multer is a node. js middleware for handling multipart/form-data , which is pri
 <br>
 
 [MORE ABOUT MULTER](https://www.npmjs.com/package/multer)
+
+[MULTER VIDEO TUTORIAL](https://www.youtube.com/watch?v=9Qzmri1WaaE)
+
+### RELATED
+
+<br>
+<hr>
+<br>
+
+#### Uploading form fields and files at the same time with Multer (Node.js, Typescript)
+
+- Multer is a widely used middleware to handle file uploads and multipart/form-data stuff received by your Node.js server application. There are tons of documentation and tutorials to teach you how to use Multer to upload files to your application. It’s not that simple to figure out how to upload files and form data at the same time though!
+
+##### The problem
+
+- As you probably know, form data can be submitted with various encodings, form-data or multipart/form-data being the oldest and most widely used. You can also use x-www-form-uuencoded, raw or json but neither of these can easily transfer a file.
+
+> But Express and its body-parser extension can’t parse multipart/form-data. ThePOST request will invoke the appropriate route, but req.body will be undefined. Only Multer can save us. (Well, not really, but this article is about Multer.)
+
+##### The solution
+
+[READ MORE)](https://medium.com/developer-rants/uploading-form-fields-and-files-at-the-same-time-with-multer-node-js-typescript-c1a367eb8198)
+
+<br>
+
+# 🌻
+
+<br>
+
+- install SHORT ID
+  `npm install --save shortid`
+
+> NOTE: shortid is deprecated, because the architecture is unsafe. we instead recommend Nano ID, which has the advantage of also being significantly faster than shortid
+
+##### ShortId creates amazingly short non-sequential url-friendly unique ids. Perfect for url shorteners, MongoDB and Redis ids, and any other id users might see.
+
+- By default 7-14 url-friendly characters: A-Z, a-z, 0-9, \_-
+- Supports cluster (automatically), custom seeds, custom alphabet.
+- Can generate any number of ids without duplicates, even millions per day.
+- Perfect for games, especially if you are concerned about cheating so you don't want an easily guessable id.
+- Apps can be restarted any number of times without any chance of repeating an id.
+- Popular replacement for Mongo ID/Mongoose ID.
+- Works in Node, io.js, and web browsers.
+- Includes Mocha tests.
+
+[More about ShortId](https://www.npmjs.com/package/shortid)
+
+##### WHAT SHORTID does , is to jelp you to create an UNIQUE ID for your files FILENAME
+
+<br>
+<hr>
+<br>
+<br>
+
+### NEXT 🌻
+
+<br>
+
+##### CREATE THE PRODUCT CONTROLLER
+
+- GO TO THE CONTROLLER FOLDER and add the product.js
+
+##### NOW GO TO THE product.js/ROUTES
+
+- INSIDE THE product.js replace the following
+
+```javascript
+//
+//
+//
+//                        ****  P R O D U C T     ****
+//                               routes
+//
+//
+//
+// REPLACE this
+router.post("/product/create", requireSignin, adminMiddleware, (req, res) => {
+  res.status(200).json({ message: "Hello test" });
+});
+//
+//
+//  FOR THIS
+router.post("/product/create", requireSignin, adminMiddleware, createProduct);
+```
+
+##### it should look likes this:
+
+```javascript
+const express = require("express");
+//HERE we are going to import the product schema
+// THE requireSignin and adminMiddleware is required for :
+// the AUTHENTICATION purposes
+const {
+  requireSignin,
+  adminMiddleware,
+} = require("../common-middleware/index");
+const router = express.Router();
+//
+//
+//
+const { createProduct } = require("../controller/product");
+
+//
+//
+//                        ****  P R O D U C T     ****
+//                               routes
+//
+//
+// change the ROUTE name for this , instead of category, add product
+router.post("/product/create", requireSignin, adminMiddleware, createProduct);
+
+module.exports = router;
+```
+
+<br>
+<br>
+
+##### MOVE the following imports
+
+- MOVE the following imports to the product.js/controller
+
+```javascript
+// import the Product S. C. H. E. M. A
+const Product = require("../models/product");
+```
+
+<br>
+
+##### it should look likes this:
+
+```javascript
+//
+//
+//                        ****  P R O D U C T     ****
+//                               controller
+//
+//
+//
+const Product = require("../models/product");
+
+exports.createProduct = (req, res) => {
+  res.status(200).json({ message: "hello product controller" });
+};
+```
+
+<br>
+
+#### GO TO POSTMAN 😎
+
+- log in again (admin)
+- copy the token
+- paste the token inside the Bearer
+- click send
+
+[<img src="../img/produc-controller-test.jpg">]()
+
+> RESULT: its working!!!
+
+<br>
+<hr>
+<br>
+
+##### GO to the product.js/CONTROLLER
+
+- require ShortId
+
+```javascript
+const shortid = require("shortid");
+```
+
+##### GO to the product.js/ROUTES
+
+- require MULTER
+
+```javascript
+const multer = require("multer");
+```
+
+- CREATE a variable called upload
+
+_This will serve to link the destination FOLDER of the files_
+
+```javascript
+//
+//    U S I N G **  M U L T E R
+//
+// const upload , is the destination folder
+// ({ dest: 'uploads/'}) , are the files
+const upload = multer({ dest: "uploads/" });
+```
+
+<br>
+
+##### ADD THE function related to molder inside the route
+
+```javascript
+router.post(
+  "/product/create",
+  requireSignin,
+  adminMiddleware,
+  upload.single("productPicture"),
+  createProduct
+);
+
+/*
+  upload.single("productPicture"),
+
+  FIRST WE WILL upload a single FILE, so here we are going 
+  to put the input field name so the product image/picture
+
+So this is the input field name of the product picture we will
+send from the POSTMAN
+
+
+*/
+```
+
+#### NOW GO TO THE CONTROLLER/product.js
+
+- delete this and add this instead
+
+```javascript
+// delete this
+res.status(200).json({ message: "hello product controller" });
+// replace it with this:
+res.status(200).json({ file: req.file, body: req.body });
+/*
+  
+  By default we are going to get a file:
+
+  file: req.file, body: req.body });
+
+  what is happening here:
+
+  Since we won't be storing our images in a database, but rather a simple folder for brevity and simplicity, let's make another folder within our project folder and name it, say, uploads.
+
+  but if we do it in this way it s going to generate it by itself.
+
+  So from the MOMENT you are going to click save to what you just typed
+  it s going to GENERATE A "uploads" FOLDER.
+  
+
+
+
+
+                                  SOME OPTIONS
+
+test/server.js/app.all
+app.all('/upload/single/truncated', (req, res) => {
+  if (!req.files) {
+   return res.status(400).send('No files were uploaded.');
+  }
+
+  // status 400 to differentiate from ending the request in the on limit
+  return req.files.testFile.truncated
+   ? res.status(400).send(`File too big`)
+   : res.status(200).send('Upload succeed');
+ });
+
+
+https://www.codota.com/code/javascript/functions/express/Request/files
+  */
+```
+
+<br>
+
+[<img src="../img/multer-test1.gif">]()
+
+<br>
+<br>
+
+### RELATED
+
+##### File Uploading Libraries
+
+- There are several Node libraries available on NPM that can simplify the process of validating and uploading files to server. Among them, the most popular choice these days are Multer, Formidable, and Multiparty.
+
+- Multer provides us control and flexibility when handling multipart/form-data requests - we get detailed information about each uploaded file, the ability to add a custom storage engine, validation of files according to our needs, the ability to set limits on uploaded files, etc.
+
+- Project Setup
+  Since we won't be storing our images in a database, but rather a simple folder for brevity and simplicity, let's make another folder within our project folder and name it, say, uploads.
+
+[read More](https://stackabuse.com/handling-file-uploads-in-node-js-with-expres-and-multer/)

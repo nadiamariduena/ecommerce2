@@ -3,6 +3,7 @@
 - Since i am really new into databases with MERN, i wanted to see the random issues i could encounter when repeating the same steps.
 
 <br>
+<hr>
 <br>
 
 #### ISSUE no.1
@@ -27,9 +28,8 @@ MONGO_DB_DATABASE = tomatoes;
   i should always change this, and of course for that i have to create a new database name inside the mongo atlas ,like so:
 
 <br>
+<hr>
 <br>
-<br>
-
 #### ISSUE no.2
 
 ###### I did a mistake with the second test as i didnt hide the .env correctly so i prefered to delete the whole repo. When adding the 3 repo, i got this ERROR.
@@ -50,7 +50,7 @@ MONGO_DB_DATABASE = tomatoes;
 - It worked!
 
 <br>
-<br>
+<hr>
 <br>
 
 #### ISSUE no.3
@@ -125,8 +125,20 @@ body-parser deprecated undefined extended: provide extended option node_modules/
 - DONT WORRY about for now!
 
 <br>
+<br>
+<br>
 
 # COMMON QUESTIONS 🌻
+
+### What is postman used for?
+
+What is Postman? Postman is a popular API client that makes it easy for developers to create, share, test and document APIs. This is done by allowing users to create and save simple and complex HTTP/s requests, as well as read their responses. The result - more efficient and less tedious work
+
+[POSTMAN website](https://www.postman.com/)
+
+<br>
+<hr>
+<br>
 
 #### What does body parser do in Express?
 
@@ -151,9 +163,8 @@ and send a response depending on that.
 <br>
 <hr>
 <br>
-<br>
 
-#### What is CRUD?
+## What is CRUD?
 
 ##### Create, Read, Update, and Delete (CRUD) are the four basic functions that models should be able to do, at most.
 

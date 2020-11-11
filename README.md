@@ -8,9 +8,34 @@
 
 <br>
 
-_REPEATING the e-commerce project i started 2 days ago_
+##### DEPENDENCIES
 
-> NOTE: i am not going to explain the set up of the server, as i already did inside the ecommerce1:
+```javascript
+"dependencies": {
+    "bcrypt": "^5.0.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.6.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.10.10",
+    "multer": "^1.4.2",
+    "nodemon": "^2.0.6",
+    "slugify": "^1.4.6"
+  }
+```
+
+<br>
+
+#### In this project i will be using POSTMAN to test http/s requests
+
+[More about POSTMAN](src/docs/ERRORS_FAQ.md)
+
+
+> NOTE: I am repeating the project i started 2 days ago
+
+ - I am not going to explain the set up of the server, as i already did inside the ecommerce1:
 
 [mern-ecommerce1](https://github.com/nadiamariduena/mongo-28-dci/tree/master/personal-lessons-tutorials/mern-ecommerce1)
 
