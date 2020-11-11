@@ -1,3 +1,7 @@
+## PRODUCTS 🌻
+
+_ONCE THE CATEGORY AND SUBCATEGORIES HAS BEEN CREATED, YOU CAN PROCEED WITH THE PRODUCTS_
+
 <br>
 
 #### START BY CREATING THE PRODUCT SCHEMA
@@ -239,9 +243,7 @@ userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 
 ##### What is a multer?
 
-*Multer is a node. js middleware for handling multipart/form-data , which is primarily used for uploading files.*
-
-
+_Multer is a node. js middleware for handling multipart/form-data , which is primarily used for uploading files._
 
 > NOTE: Multer will not process any form which is not multipart (multipart/form-data).
 
