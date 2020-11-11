@@ -15,6 +15,8 @@ const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin/auth");
 // categories
 const categoryRoutes = require("./routes/category");
+// product
+const productRoutes = require("./routes/product");
 //
 //
 //
@@ -71,7 +73,8 @@ app.use("/api", authRoutes);
 app.use("/api", adminRoutes);
 //    C A T E G O R Y .. ROUTES
 app.use("/api", categoryRoutes);
-
+//    P R O D U C T .. ROUTES
+app.use("/api", productRoutes);
 //
 //
 //
