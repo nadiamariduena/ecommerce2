@@ -534,3 +534,36 @@ https://www.codota.com/code/javascript/functions/express/Request/files
   Since we won't be storing our images in a database, but rather a simple folder for brevity and simplicity, let's make another folder within our project folder and name it, say, uploads.
 
 [read More](https://stackabuse.com/handling-file-uploads-in-node-js-with-expres-and-multer/)
+
+<br>
+<br>
+
+##### AFTER GENERATING THE "UPLOADS" FOLDER for the images
+
+- GO TO POSTMAN
+
+- INSTEAD OF USING RAW like for JSON (application/json)
+
+- USE "form-data"
+
+- While choosing the form you will have 2 headers
+
+| key  | value     |
+| ---- | --------- |
+| name | some text |
+
+| key     | value |
+| ------- | ----- |
+| product | File  |
+
+<br>
+
+> Note: On the file, you have to click on the Text with the arrow to get the dropdown option
+
+<br>
+
+#### CLICK on the image :sunflower:
+
+- WATCH the video to follow the steps
+
+[<img src="../img/multer-picture-storage1.gif">](https://www.youtube.com/watch?v=WH10ezaubts)

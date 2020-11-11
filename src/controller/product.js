@@ -10,4 +10,6 @@ const Product = require("../models/product");
 
 exports.createProduct = (req, res) => {
   res.status(200).json({ file: req.file, body: req.body });
+  //   before
+  //   res.status(200).json({ message: "hello product controller" });
 };
