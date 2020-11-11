@@ -3438,7 +3438,7 @@ module.exports = router;
 
 <br>
 
-##### SINCE we are going to UPLOAD images, we cannot send Json response, so we cannot accept json DATA therefor we are going to accept the FORM DATA.
+##### SINCE we are going to UPLOAD images, we cannot send Json response, so we cannot accept json DATA 
 
 - START by testing it with this:
 
@@ -3518,7 +3518,7 @@ userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 
 ##### SO LOGIN
 
-- COPY the token, in the new tab add the headers again:
+- COPY the token, in the new tab and add the headers again:
 
 - key: Authorization | value: Bearer and the token code
 
