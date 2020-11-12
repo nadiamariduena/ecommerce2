@@ -1346,16 +1346,53 @@ req.body.name
 ```
 
 <br>
-<br>
 
 ### It worked!!
 
 ##### THE ERRORS in the result refer to all empty fields we still need to FILL
 
-- i also noticed we dont have a "quantity field" inside the model of the products
+- I also noticed we dont have a "quantity field" inside the model of the products
 
-> Without it we dont have a stock of a product
+> Without it we dont have a stock of a product,
 
-#### TESTING it in POSTMAN
+- GO BACK to the controllers/products.js and add quantity like so:
 
+<br>
 
+```javascript
+exports.createProduct = (req, res) => {
+
+  const { name, price, quantity, description, category, createdBy } = req.body;
+  let productPictures = [];
+
+  if (req.files.length > 0) {
+
+    productPictures = req.files.map((file) => {
+
+      return { img: file.filename };
+
+    });
+  }
+
+  //  ------------------
+  const product = new Product({
+    name: name,
+    slug: slugify(name),
+    price,
+    quantity,
+    description,
+    productPictures,
+    category,
+    createdBy: req.user._id,
+  });
+```
+
+<br>
+
+#### TEST IT AGAIN
+
+- CLICK ON THE IMAGES TO SEE THE STEPS TO FOLLOW ON POSTMAN, as you need to create new fields there and add the respective information.
+
+[<img src="../img/product_creation1_.gif">](https://www.youtube.com/watch?v=Y6MytW7pLOY)
+
+<br>
