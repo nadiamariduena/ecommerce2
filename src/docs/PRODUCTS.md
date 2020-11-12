@@ -666,6 +666,11 @@ exports.createProduct = (req, res) => {
   //   before
   //   res.status(200).json({ message: "hello product controller" });
 };
+/*
+ where does multer "upload" the FILE INFORMATION?
+ for a single file:
+ file: req.file,
+ */
 ```
 
 <br>
@@ -760,6 +765,11 @@ const storage = multer.diskStorage({
         "name": "picture testoo"
     }
 }
+ /*
+ where does multer "upload" the FILE INFORMATION?
+ for a single file:
+ file: req.file,
+ */
 ```
 
 <br>
@@ -772,6 +782,8 @@ const storage = multer.diskStorage({
 filename": "rADOzvcuy-
 // from
 // "filename": "rADOzvcuy-Saint Ambrose with Ambrosius van Engelen.jpg",
+
+
 ```
 
 <br>
@@ -836,6 +848,22 @@ module.exports = router;
 ```
 
 <br>
+
+> multer.diskStorage
+> Is where you want to store the data,
+> its connected to this line we haven't yet created:
+
+`const upload = multer({ storage }); `
+
+<p>multer({ storage });
+Is multer middleware
+
+the multer middleware related upload.single("productPicture"),
+here you tell multer which name you are going
+to use for the image ("productPicture")
+
+</p>
+
 <br>
 <br>
 
@@ -906,27 +934,203 @@ exports.createProduct = (req, res) => {
 
 [<img src="../img/multiple-files-multer.jpg">]()
 
-<!-- multiple-images.gi
+<br>
+<br>
+<br>
+<hr>
+<br>
 
+#### CREATE THE PRODUCT
 
-> multer.diskStorage
-> Is where you want to store the data,
-> its connected to this line we haven't yet created:
+- GO TO THE CONTROLLER/products.js
 
-`const upload = multer({ storage }); `
+- HIDE THIS
 
-<p>multer({ storage });
-Is multer middleware
+```javascript
+res.status(200).json({ file: req.files, body: req.body });
+```
 
-the multer middleware related upload.single("productPicture"),
-here you tell multer which name you are going
-to use for the image ("productPicture")
+- ADD THE FOLLOWING
 
-</p>
+```javascript
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+      trim: true,
+      //   max: 5000, this is for the length of the description
+    },
+    // this is not "required", because offers on a product are not something permanent.
+    offer: {
+      type: Number,
+    },
+    productPictures: [{ img: { type: String } }],
+    // here we will tell "who" can write a review on the product
+    // Ref: "User" }], YOU ARE MAKING REFERENCE to the User Schema we have inside the user.js/MODELS and what the User contains: module.exports = mongoose.model("User", userSchema);
+    reviews: [
+      // here we are going to use the LINKING, it means that the person posting a review must have an account
+      {
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        review: String,
+      },
+      // So if that person needs to add a review, it needs to be logged in
+    ],
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    updatedAt: Date,
+```
 
-// if you have multiple images of 1 product, you use array.
-// upload.array("product_images")
+- YOU WILL ADD THAT PIECE OF CODE (from the product schema) , inside here:
 
+```javascript
+//                        ****  P R O D U C T     ****
+//                               controller
+//
+//
+//
+const Product = require("../models/product");
 
+exports.createProduct = (req, res) => {
+  // HIDE THIS (RELATED TO MULTIPLE IMAGES)
+  // res.status(200).json({ file: req.files, body: req.body });
+);
 
- -->
+  const product = new Product({
+//      YOU WILL ADD THE CODE HERE ***
+  });
+};
+```
+
+- FROM THAT CODE (that will serve to check what you will be grabbing)
+
+  - ITS MORE EASY to copy and paste the code here than cheking the schema all the time.
+
+  - SO create a variable and add the things you will take from the schema
+
+- ADD SLUGIFY
+
+```javascript
+//                        ****  P R O D U C T     ****
+//                               controller
+//
+//
+//
+const Product = require("../models/product");
+
+exports.createProduct = (req, res) => {
+  // HIDE THIS (RELATED TO MULTIPLE IMAGES)
+  // res.status(200).json({ file: req.files, body: req.body });
+
+  const product = new Product({
+    //      YOU WILL ADD THE CODE HERE ***
+  });
+};
+```
+
+<br>
+<br>
+
+##### IT SHOULD LOOK LIKE THIS
+
+- SO HERE YOU ARE CREATING THE PRODUCT AND saving it
+  <br>
+
+```javascript
+const shortid = require("shortid");
+const Product = require("../models/product");
+const slugify = require("slugify");
+//
+//                        ****  P R O D U C T     ****
+//                               controller
+//
+//
+//
+
+exports.createProduct = (req, res) => {
+  // the line below will help in the validation
+  // 1
+  const {
+    name,
+    price,
+    description,
+    productPictures,
+    category,
+    createdBy,
+  } = req.body;
+  // 2
+  const product = new Product({
+    name: req.body.name,
+    slug: slugify(name),
+    price,
+    description,
+    productPictures,
+    category,
+    createdBy: req.user._id,
+  });
+  //3  now SAVE the steps and HANDLE the ERRORS
+
+  product.save().exec((error, product) => {
+    //
+    // ERROR HANDLING
+    // if there is an error, return a response 400 with a message json that says "error"
+    if (error) return res.status(400).json({ error });
+    // if the saving was successful, show the product
+    if (product) {
+      res.status(201).json({ product });
+    }
+  });
+};
+```
+
+##### WE ARE GOING TO CHANGE SOME THINGS
+
+- WE ARE GOING TO USE THE "productPictures" array as a "file", like we already had it when we tested the single and multiple images:
+
+```javascript
+{
+    "file": [
+        {
+            "fieldname": "productPicture",
+            "originalname": "Saint Ambrose with Ambrosius van Engelen.jpg",
+            "encoding": "7bit",
+            "mimetype": "image/jpeg",
+            "destination": "/home/dci-st119/Documents/ecommerce2_mern/src/uploads",
+            "filename": "39tnvqwfh-Saint Ambrose with Ambrosius van Engelen.jpg",
+            "path": "/home/dci-st119/Documents/ecommerce2_mern/src/uploads/39tnvqwfh-Saint Ambrose with Ambrosius van Engelen.jpg",
+            "size": 207361
+        },
+        {
+            "fieldname": "productPicture",
+            "originalname": "Screenshot from 2020-10-17 01-29-47.jpg",
+            "encoding": "7bit",
+            "mimetype": "image/jpeg",
+            "destination": "/home/dci-st119/Documents/ecommerce2_mern/src/uploads",
+            "filename": "MiTGnVU5BG-Screenshot from 2020-10-17 01-29-47.jpg",
+            "path": "/home/dci-st119/Documents/ecommerce2_mern/src/uploads/MiTGnVU5BG-Screenshot from 2020-10-17 01-29-47.jpg",
+            "size": 41661
+        }
+    ],
+    "body": {
+        "name": "picture testoo"
+    }
+}
+```
