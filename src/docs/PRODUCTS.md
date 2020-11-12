@@ -1396,3 +1396,5 @@ exports.createProduct = (req, res) => {
 [<img src="../img/product_creation1_.gif">](https://www.youtube.com/watch?v=Y6MytW7pLOY)
 
 <br>
+
+[<img src="../img/product1creation.jpg">]()
