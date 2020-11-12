@@ -1049,7 +1049,7 @@ exports.createProduct = (req, res) => {
 <br>
 <br>
 
-##### IT SHOULD LOOK LIKE THIS
+#### IT SHOULD LOOK LIKE THIS
 
 - SO HERE YOU ARE CREATING THE PRODUCT AND saving it
   <br>
@@ -1101,7 +1101,10 @@ exports.createProduct = (req, res) => {
 };
 ```
 
-##### WE ARE GOING TO CHANGE SOME THINGS
+<br>
+<br>
+
+#### WE ARE GOING TO CHANGE SOME THINGS
 
 - WE ARE GOING TO USE THE "productPictures" array as a "file", like we already had it when we tested the single and multiple images:
 
@@ -1134,3 +1137,225 @@ exports.createProduct = (req, res) => {
     }
 }
 ```
+
+<br>
+<br>
+
+> FOR THAT WE WILL HAVE TO SET UP AN if statement and map through the data "files"
+
+```javascript
+//                        ****  P R O D U C T     ****
+//                               controller
+//
+//
+//
+
+exports.createProduct = (req, res) => {
+  // the line below will help in the validation
+  // 1   ------------------
+  const { name, price, description, category, createdBy } = req.body;
+
+  // 5 remove the productPictures from the step 1
+  // 6 add it here
+  let productPictures = [];
+  // in allusion to this: upload.array("productPicture"),
+
+  // 4 ------------------
+  //  if you have more than 0 (which means if you have at least a image)
+  if (req.file.length > 0) {
+    // 7 so map the pictures inside the "files" which is productPicture data from the outside
+    productPictures = req.files.map((file) => {
+      // return the image, with this you practically have the result of the precedent tests
+      // ASK ROBERT ABOUT why all this?
+      // before: return file.filename;
+      //
+      return { img: file.filename };
+      /*
+      
+      You cannot show it like this : return file.filename;
+      and the reason for that is because inside the product
+       schema we have it like so:
+      
+       productPictures: [{ img: { type: String } }],
+
+       As you can see, its an array with an object inside of it
+      
+      */
+    });
+  }
+
+  // 2 ------------------
+  const product = new Product({
+    name: req.body.name,
+    slug: slugify(name),
+    price,
+    description,
+    productPictures,
+    category,
+    createdBy: req.user._id,
+  });
+
+  //3  ------------------
+  // now SAVE the steps and HANDLE the ERRORS
+
+  product.save().exec((error, product) => {
+    //
+    // ERROR HANDLING
+    // if there is an error, return a response 400 with a message json that says "error"
+    if (error) return res.status(400).json({ error });
+    // if the saving was successful, show the product
+    if (product) {
+      res.status(201).json({ product });
+    }
+  });
+};
+
+/*
+--------
+createdBy: req.user._id
+its automatically generated depending of the admin that is creating the product
+---------
+
+req.body 
+holds parameters that are sent up 
+from the client as part of a POST request. 
+
+See the API.
+
+// POST user[name]=tobi&user[email]=tobi@learnboost.com
+req.body.user.name
+// => "tobi"
+
+req.body.user.email
+// => "tobi@learnboost.com"
+
+// POST { "name": "tobi" }
+req.body.name
+// => "tobi"
+
+
+
+*/
+```
+
+##### NOW GO AND TEST IT ON POSTMAN
+
+> THE ERROR
+
+```javascript
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Error</title>
+    </head>
+    <body>
+        <pre>TypeError: Cannot read property &#39;length&#39; of undefined
+            <br> &nbsp; &nbsp;at exports.createProduct (/home/dci-st119/Documents/ecommerce2_mern/src/controller/product.js:23:16)
+            <br> &nbsp; &nbsp;at Layer.handle [as handle_request] (/home/dci-st119/Documents/ecommerce2_mern/node_modules/express/lib/router/layer.js:95:5)
+            <br> &nbsp; &nbsp;at next (/home/dci-st119/Documents/ecommerce2_mern/node_modules/express/lib/router/route.js:137:13)
+            <br> &nbsp; &nbsp;at Immediate.&lt;anonymous&gt; (/home/dci-st119/Documents/ecommerce2_mern/node_modules/multer/lib/make-middleware.js:53:37)
+            <br> &nbsp; &nbsp;at processImmediate (internal/timers.js:446:21)
+        </pre>
+    </body>
+</html>
+```
+
+> THE ERROR: TypeError: Cannot read property &#39;length&#39; of undefined
+> Its due to the fact that we didnt UPLOAD any new image
+
+- THERE S ALSO A MISTAKE in the if statement
+
+```javascript
+// there s the "s" missing
+ if (req.file.length > 0) {
+  //  correction
+   if (req.files.length > 0) {
+```
+
+<br>
+
+#### AFTER THOSE CHANGES, there will be another ERROR :)
+
+<br>
+
+`<pre>TypeError: product.save(...).exec is not a function`
+
+- its related to the .exec
+
+<br>
+
+```javascript
+// instead of this
+  product.save().exec((error, product) => {
+    if (error) return res.status(400).json({ error });
+    if (product) {
+      res.status(201).json({ product });
+    }
+  });
+};
+// add this
+  product.save(((error, product) => {
+    if (error) return res.status(400).json({ error });
+    if (product) {
+      res.status(201).json({ product });
+    }
+  }));
+};
+```
+
+<br>
+
+#### NOW GO TO POSTMAN AND TEST IT AGAIN
+
+> RESULT
+
+<br>
+
+```javascript
+{
+    "error": {
+        "errors": {
+            "price": {
+                "name": "ValidatorError",
+                "message": "Path `price` is required.",
+                "properties": {
+                    "message": "Path `price` is required.",
+                    "type": "required",
+                    "path": "price"
+                },
+                "kind": "required",
+                "path": "price"
+            },
+            "description": {
+                "name": "ValidatorError",
+                "message": "Path `description` is required.",
+                "properties": {
+                    "message": "Path `description` is required.",
+                    "type": "required",
+                    "path": "description"
+                },
+                "kind": "required",
+                "path": "description"
+            }
+        },
+        "_message": "Product validation failed",
+        "message": "Product validation failed: price: Path `price` is required., description: Path `description` is required."
+    }
+}
+```
+
+<br>
+<br>
+
+### It worked!!
+
+##### THE ERRORS in the result refer to all empty fields we still need to FILL
+
+- i also noticed we dont have a "quantity field" inside the model of the products
+
+> Without it we dont have a stock of a product
+
+#### TESTING it in POSTMAN
+
+

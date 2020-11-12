@@ -10,29 +10,64 @@ const slugify = require("slugify");
 
 exports.createProduct = (req, res) => {
   // the line below will help in the validation
-  // 1
-  const {
-    name,
-    price,
-    description,
-    productPictures,
-    category,
-    createdBy,
-  } = req.body;
-  // 2
+  // 1   ------------------
+  const { name, price, quantity, description, category, createdBy } = req.body;
+
+  // 5 remove the productPictures from the step 1
+  // 6 add it here
+  let productPictures = [];
+  // in allusion to this: upload.array("productPicture"),
+
+  // 4 ------------------
+  //  if you have more than 0 (which means if you have at least a image)
+  if (req.files.length > 0) {
+    // 7 so map the pictures inside the "files" which is productPicture data from the outside
+
+    productPictures = req.files.map((file) => {
+      // return the image, with this you practically have the result of the precedent tests
+      // ASK ROBERT ABOUT why all this?
+      // before: return file.filename;
+      //
+      return { img: file.filename };
+      /*
+      
+      You cannot show it like this : return file.filename;
+      and the reason for that is because inside the product
+       schema we have it like so:
+      
+       productPictures: [{ img: { type: String } }],
+
+       As you can see, its an array with an object inside of it
+      
+      */
+    });
+  }
+
+  // 2 ------------------
   const product = new Product({
-    name: req.body.name,
+    name: name,
     slug: slugify(name),
     price,
+    quantity,
     description,
     productPictures,
     category,
     createdBy: req.user._id,
   });
+  /*
+  
 
-  //3  now SAVE the steps and HANDLE the ERRORS
+                createdBy: req.user._id
+                its automatically generated depending of the admin that
+                is creating the product
 
-  product.save().exec((error, product) => {
+
+*/
+
+  //3  ------------------
+  // now SAVE the steps and HANDLE the ERRORS
+
+  product.save((error, product) => {
     //
     // ERROR HANDLING
     // if there is an error, return a response 400 with a message json that says "error"
@@ -45,28 +80,10 @@ exports.createProduct = (req, res) => {
 };
 
 /*
---------
-createdBy: req.user._id
-its automatically generated depending of the admin that is creating the product
----------
 
-req.body 
-holds parameters that are sent up 
-from the client as part of a POST request. 
 
-See the API.
-
-// POST user[name]=tobi&user[email]=tobi@learnboost.com
-req.body.user.name
-// => "tobi"
-
-req.body.user.email
-// => "tobi@learnboost.com"
-
-// POST { "name": "tobi" }
-req.body.name
-// => "tobi"
-
+      // ASK ROBERT ABOUT what is the reason for all this rpocedure to get
+      the multiple images
 
 
 */
