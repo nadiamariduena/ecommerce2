@@ -182,3 +182,35 @@ it should potentially be a model of its own.
 </p>
 
 [what-is-crud ? by CODEACADEMY](https://www.codecademy.com/articles/what-is-crud)
+
+<br>
+<hr>
+<br>
+
+## IMAGES UPLOADING RELATED 📷 🌻
+
+<br>
+
+#### File Upload With Multer in Node.js and Express
+
+<p>When a web client uploads a file to a server, it is generally submitted through a form and encoded as multipart/form-data. Multer is middleware for Express and Node.js that makes it easy to handle this multipart/form-data when your users upload files. </p>
+
+<p>In this tutorial, I'll show you how to use the Multer library to handle different file upload situations in Node.
+</p>
+
+#### How Does Multer Work?
+
+<p>As I said above, Multer is Express middleware. Middleware is a piece of software that connects different applications or software components. In Express, middleware processes and transforms incoming requests to the server. In our case, Multer acts as a helper when uploading files.
+</p>
+
+##### Project Setup
+
+<p>We will be using the Node Express framework for this project. Of course, you'll need to have Node installed. </p>
+
+<br>
+
+[FOLLOW THE STEPS IN THIS LINK](https://code.tutsplus.com/tutorials/file-upload-with-multer-in-node--cms-32088)
+
+<br>
+<hr>
+<br>

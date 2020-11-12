@@ -440,6 +440,7 @@ _This will serve to link the destination FOLDER of the files_
 // const upload , is the destination folder
 // ({ dest: 'uploads/'}) , are the files
 const upload = multer({ dest: "uploads/" });
+// dest: stands for destination, here we set up the destination of the images
 ```
 
 <br>
@@ -454,17 +455,20 @@ router.post(
   upload.single("productPicture"),
   createProduct
 );
-
 /*
-  upload.single("productPicture"),
+ where does multer "upload" the FILE INFORMATION?
+ for a single file:
+ file: req.file,
 
-  FIRST WE WILL upload a single FILE, so here we are going 
-  to put the input field name so the product image/picture
+- single image
+upload.single("productPicture"),
 
-So this is the input field name of the product picture we will
+- multiple images
+upload.array("productPicture"),
+
+
+So this is the input field name of the product picture, we will
 send from the POSTMAN
-
-
 */
 ```
 
@@ -542,9 +546,9 @@ https://www.codota.com/code/javascript/functions/express/Request/files
 
 - GO TO POSTMAN
 
-- INSTEAD OF USING RAW like for JSON (application/json)
+- INSTEAD OF USING RAW like with option: JSON (application/json)
 
-- USE "form-data"
+- USE "form-data" , that is because its not a json file
 
 - While choosing the form you will have 2 headers
 
@@ -570,9 +574,11 @@ https://www.codota.com/code/javascript/functions/express/Request/files
 
 ##### IF YOU NOTICE
 
-> INSIDE THE UPLOADS folder (where the uploads made via postman are stored), the images are unreadable.
+> INSIDE THE UPLOADS folder (where the uploads made via postman are stored), the images are unreadable/encrypted.
 
 #### TO PREVENT THAT
+
+- Go to the official multer page
 
 - PASTE DE FOLLOWING CODE inside the products.js/ROUTES
 
@@ -586,3 +592,341 @@ var storage = multer.diskStorage({
   },
 });
 ```
+
+- REPLACE few things
+
+```javascript
+//                            ***      MULTER config   ***
+//
+// BEFORE CHANGES
+//
+// const storage = multer.diskStorage({
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "/tmp/my-uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + "-" + Date.now());
+  },
+});
+//
+// AFTER CHANGES
+//
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "../uploads");
+    // original  CHANGE1: cb(null, '/tmp/my-uploads') from the original website
+    // CHANGE2: cb(null, '../uploads')  but there was an error
+  },
+  filename: function (req, file, cb) {
+    cb(null, shortid.generate() + "-" + file.originalname);
+    // original name is what you got from the postman after the first result
+  },
+});
+/*  check the original name inside the uploaded file in postman
+
+{
+   ****     "originalname": "Saint Ambrose with Ambrosius van Engelen.jpg",
+
+  */
+```
+
+<br>
+
+##### IMPORT THE FOLLOWING
+
+```javascript
+// IMPORT
+const shortid = require("shortid");
+const path = require("path");
+```
+
+<br>
+
+#### GO TO THE CONTROLLER/product.js
+
+- ADD THIS
+
+```javascript
+const shortid = require("shortid");
+
+//
+//                        ****  P R O D U C T     ****
+//                               controller
+//
+//
+//
+const Product = require("../models/product");
+
+exports.createProduct = (req, res) => {
+  res.status(200).json({ file: req.file, body: req.body });
+  // file:
+  // in file you check the file name
+  //   before
+  //   res.status(200).json({ message: "hello product controller" });
+};
+```
+
+<br>
+
+#### BEFORE testing it again
+
+- check if you have all this imports
+
+```javascript
+const express = require("express");
+const {
+  requireSignin,
+  adminMiddleware,
+} = require("../common-middleware/index");
+//
+const { createProduct } = require("../controller/product");
+
+//
+//    U S I N G **  M U L T E R
+const multer = require("multer");
+const router = express.Router();
+const upload = multer({ dest: "uploads/" });
+const shortid = require("shortid");
+const path = require("path");
+//
+
+//
+```
+
+### AFTER DOING ALL THAT
+
+- test it again
+
+- YOU WILL NOTICE that the images are still in the generate UPLOADS folder that is outside the SRC folder
+
+<br>
+
+#### REPLACE THE FOLLOWING AND CHANGE THE POSITION (products.js/routes)
+
+- take this line : const upload = multer({ dest: "uploads/" });
+
+- move it here then change it, from ({ dest: "uploads/" }); to ({ storage });
+
+```javascript
+  filename: function (req, file, cb) {
+    cb(null, shortid.generate() + "-" + file.originalname);
+  },
+});
+
+
+// multer middleware **
+// const upload = multer({ dest: "uploads/" });
+const upload = multer({ storage });
+```
+
+##### SO YOU WILL HAVE to create the new UPLOADS folder manually
+
+##### INSIDE THE SRC, add the new UPLOADS folder
+
+> once you have done that, change this:
+
+```javascript
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+  // instead of adding this:     cb(null, '/tmp/my-uploads')
+    // you will have to create a folder inside the src folder, in paralell to the server.index.js
+    cb(null, path.join(path.dirname(__dirname), "uploads"));
+    // you use this: __dirname to find the current directory of this file which is routes, so whenever we are using path.dirname,
+    // its going to give the directory of current directory that is SRC
+    // then you are going to add a last function path : path.join()
+    // join in js: Convert the elements of an array into a string:
+  },
+```
+
+<br>
+
+##### RESULT
+
+```javascript
+{
+    "file": {
+        "fieldname": "productPicture",
+        "originalname": "Saint Ambrose with Ambrosius van Engelen.jpg",
+        "encoding": "7bit",
+        "mimetype": "image/jpeg",
+        "destination": "/home/dci-st119/Documents/ecommerce2_mern/src/uploads",
+        "filename": "rADOzvcuy-Saint Ambrose with Ambrosius van Engelen.jpg",
+        "path": "/home/dci-st119/Documents/ecommerce2_mern/src/uploads/rADOzvcuy-Saint Ambrose with Ambrosius van Engelen.jpg",
+        "size": 207361
+    },
+    "body": {
+        "name": "picture testoo"
+    }
+}
+```
+
+<br>
+
+#### THE SHORT ID preview in the result
+
+- ShortId creates amazingly short non-sequential url-friendly unique ids. Perfect for url shorteners, MongoDB and Redis ids, and any other id users might see.
+
+```javascript
+filename": "rADOzvcuy-
+// from
+// "filename": "rADOzvcuy-Saint Ambrose with Ambrosius van Engelen.jpg",
+```
+
+<br>
+<br>
+
+#### THE WHOLE IMAGE UPLOAD code
+
+```javascript
+const express = require("express");
+const {
+  requireSignin,
+  adminMiddleware,
+} = require("../common-middleware/index");
+//
+const { createProduct } = require("../controller/product");
+
+//
+//    U S I N G **  M U L T E R
+const multer = require("multer");
+const router = express.Router();
+const shortid = require("shortid");
+const path = require("path");
+
+//
+//
+//                        ****  P R O D U C T     ****
+//                               routes
+//
+//
+//                              MULTER config --------
+// const storage = multer.diskStorage({
+// multer.diskStorage
+// Is where you want to store the data,
+// its connected to:  const upload = multer({ storage });
+//
+// cb is the call back function, like the "done" in roberts example
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(path.dirname(__dirname), "uploads"));
+  },
+  //
+  //
+  filename: function (req, file, cb) {
+    cb(null, shortid.generate() + "-" + file.originalname);
+  },
+});
+
+// multer middleware **
+// const upload = multer({ dest: "uploads/" });
+const upload = multer({ storage });
+//
+//
+router.post(
+  "/product/create",
+  requireSignin,
+  adminMiddleware,
+  upload.array("productPicture"),
+  createProduct
+);
+
+module.exports = router;
+```
+
+<br>
+<br>
+<br>
+
+### MULTIPLE IMAGES 📷 🌻 🌻
+
+- INSTEAD OF SETTING IT UP TO SINGLE , SET IT UP TO "ARRAY"
+
+```javascript
+// - single image
+upload.single("productPicture"),
+
+// - multiple images
+upload.array("productPicture"),
+
+```
+
+- WATCH the video to follow the steps
+
+[<img src="../img/multiple-images.gif">](https://www.youtube.com/watch?v=BYHkemXgIEo)
+
+<br>
+
+#### TO SOLVE THE ERROR
+
+> THE PROBLEM is due to the fact that we selected the ARRAY to handle multiple images, but we are not setting it up in the CONTROLLER/product.js
+
+- THIS IS THE SET UP for a single file (morgan documentation)
+
+```javascript
+app.post("/profile", upload.single("avatar"), function (req, res, next) {
+  // req.file is the `avatar` file
+  // req.body will hold the text fields, if there were any
+});
+```
+
+- THIS IS THE SET UP for a multiple files (morgan documentation)
+
+```javascript
+app.post("/photos/upload", upload.array("photos", 12), function (
+  req,
+  res,
+  next
+) {
+  // req.files is array of `photos` files
+  // req.body will contain the text fields, if there were any
+});
+```
+
+###### IN THIS PROJECT I WILL JUST ADD THE S to the file
+
+- LIKE SO:
+
+```javascript
+const Product = require("../models/product");
+
+exports.createProduct = (req, res) => {
+  res.status(200).json({ file: req.files, body: req.body });
+  //   before ,the line below has the "file" for just a single image
+  // res.status(200).json({ file: req.file, body: req.body });
+};
+```
+
+<br>
+
+##### SAVE AND TEST IT IN POSTMAN
+
+##### RESULT
+
+[<img src="../img/multiple-files-multer.jpg">]()
+
+<!-- multiple-images.gi
+
+
+> multer.diskStorage
+> Is where you want to store the data,
+> its connected to this line we haven't yet created:
+
+`const upload = multer({ storage }); `
+
+<p>multer({ storage });
+Is multer middleware
+
+the multer middleware related upload.single("productPicture"),
+here you tell multer which name you are going
+to use for the image ("productPicture")
+
+</p>
+
+// if you have multiple images of 1 product, you use array.
+// upload.array("product_images")
+
+
+
+ -->
