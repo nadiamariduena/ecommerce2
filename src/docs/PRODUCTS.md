@@ -567,3 +567,22 @@ https://www.codota.com/code/javascript/functions/express/Request/files
 - WATCH the video to follow the steps
 
 [<img src="../img/multer-picture-storage1.gif">](https://www.youtube.com/watch?v=WH10ezaubts)
+
+##### IF YOU NOTICE
+
+> INSIDE THE UPLOADS folder (where the uploads made via postman are stored), the images are unreadable.
+
+#### TO PREVENT THAT
+
+- PASTE DE FOLLOWING CODE inside the products.js/ROUTES
+
+```javascript
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "/tmp/my-uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + "-" + Date.now());
+  },
+});
+```
