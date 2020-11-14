@@ -74,14 +74,14 @@ exports.signin = (req, res) => {
 - - CREATE THE SCHEMA for the CART
 - - COPY the MODELS category.js
 - - PASTE IT in the cart.js/models
-- - REMOVE MOST OF THE STUFF and live it like so:
+- - REMOVE MOST OF THE STUFF and leave it like so:
 
 ```javascript
 const mongoose = require("mongoose");
 //
 // -----------------------------------------
 //
-//              SHOPPING-CART SCHEMA
+//              CART SCHEMA
 //
 // -----------------------------------------
 //
@@ -143,9 +143,7 @@ module.exports = mongoose.model("Cart", cartSchema);
 
 - - GO TO THE ROUTES category.js
 - - COPY THE category.js
-- - COPY the MODELS category.js
-- - PASTE IT in the cart.js/models
-- - CREATE THE CONTROLLER/cart.js
+- - PASTE IT in the cart.js/ROUTES
 - - REPLACE FEW THINGS
 
 > THE NEW THINGS: will be the function called "addItemToCart"
@@ -191,7 +189,7 @@ module.exports = router;
 <br>
 <br>
 
-#### NOW GO TO THE CONTROLLERS/cart.js
+#### NOW CREATE THE CONTROLLER/cart.js
 
 - ADD THE FOLLOWING
 
@@ -210,7 +208,7 @@ const Cart = require("../models/cart");
 // ----------------------
 //
 exports.addItemToCart = (req, res) => {
-  res.json({ message: "hello cart" });
+  res.json({ message: "COWABUNGA TURTLE cart" });
 };
 ```
 
@@ -245,7 +243,7 @@ app.use("/api", cartRoutes);
 
 #### CHECK IF ALL IS OKAY IN THE SERVER THEN TEST IT ON POSTMAN
 
-##### BEFORE testing the cart route
+##### BEFORE testing the cart routes
 
 - CREATE A NEW user (no admin)
 
@@ -269,6 +267,7 @@ app.use("/api", cartRoutes);
     "message": "User created Successfully"
 }
 ```
+<br>
 
 ##### NOW SIGNIN AND COPY THE TOKEN
 
@@ -299,7 +298,7 @@ app.use("/api", cartRoutes);
 }
 
 ```
-
+<br>
 <br>
 
 ##### NOW YOU ARE READY TO TEST THE CART ROUTES
