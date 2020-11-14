@@ -1531,6 +1531,8 @@ required: true,
 
 [<img src="../img/category_id-to-use-inside-category.jpg">]()
 
+<br>
+
 #### AFTERWARDS
 
 - PAST THE ID inside the: localhost:8000/api/product/create
@@ -1538,3 +1540,51 @@ required: true,
 - CREATE THE CATEGORY LIKE SO:
 
 [<img src="../img/adding-category-to-product-pictures.gif">]()
+
+<br>
+
+#### RESULT IN POSTMAN
+
+```javascript
+{
+    "product": {
+        "_id": "5fafaa8a68a590754956e890",
+        "name": "Monstera Deliciosa",
+        "slug": "Monstera-Deliciosa",
+        "price": 50,
+        "quantity": 20,
+        "description": "Monstera deliciosa is a species of flowering plant native to tropical forests of southern Mexico, south to Panama.It has been introduced to many tropical areas, and has become a mildly invasive species in Hawaii, Seychelles, Ascension Island and the Society Islands.",
+        "productPictures": [
+            {
+                "_id": "5fafaa8a68a590754956e891",
+                "img": "K2TuTXAdF-vvb41.jpg"
+            },
+            {
+                "_id": "5fafaa8a68a590754956e892",
+                "img": "irf4Ag6lkv-tumblr_olgr2rdm7R1qln4yro1_640.jpg"
+            },
+            {
+                "_id": "5fafaa8a68a590754956e893",
+                "img": "LuK1ZiadNi-tumblr_olgr2rdm7R1qln4yro1_640.jpg"
+            }
+        ],
+        "category": "5faae7535fee14484dadd9c8",
+        "createdBy": "5fa99d1ada0e6456cdb04bbf",
+        "reviews": [],
+        "createdAt": "2020-11-14T09:59:38.948Z",
+        "updatedAt": "2020-11-14T09:59:38.948Z",
+        "__v": 0
+    }
+}
+```
+
+#### RESULT IN THE DATABASE
+
+[<img src="../img/category-product.pic-result.gif">]()
+
+<br>
+<br>
+<br>
+<br>
+
+##### HOW TO FETCH THE PRODUCTS
