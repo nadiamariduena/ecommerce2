@@ -19,16 +19,15 @@ exports.createProduct = (req, res) => {
   // in allusion to this: upload.array("productPicture"),
 
   // 4 ------------------
-  //  if you have more than 0 (which means if you have at least a image)
+  // Here its checking if any file where uploaded to me  and IF so...
   if (req.files.length > 0) {
-    // 7 so map the pictures inside the "files" which is productPicture data from the outside
-
+    // 7
+    // so, map/loop the pictures inside the "files"
+    // which is productPicture data from the outside/ the req.body we received
     productPictures = req.files.map((file) => {
-      // return the image, with this you practically have the result of the precedent tests
-      // ASK ROBERT ABOUT why all this?
-      // before: return file.filename;
       //
       return { img: file.filename };
+      // Here we create an image object for every single "file" we receive
       /*
       
       You cannot show it like this : return file.filename;
@@ -44,6 +43,7 @@ exports.createProduct = (req, res) => {
   }
 
   // 2 ------------------
+  //  Here we are translating what was send to me in step 1, to database DOCument
   const product = new Product({
     name: name,
     slug: slugify(name),

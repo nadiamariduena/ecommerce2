@@ -28,19 +28,43 @@ const path = require("path");
 // multer.diskStorage
 // Is where you want to store the data, its connected to:  const upload = multer({ storage });
 //
-// cb is the call back function, like the "done" in roberts example
+// Robert told me that it s a better procedure to add "DONE" instead of calling it "cb" that
+// stands for callback, as it helps me to differentiate it better when a function is actually "done"
+//
+// So done is the call back function, like the "done" in roberts example from yesterdays lesson
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(path.dirname(__dirname), "uploads"));
+  destination: function (req, file, done) {
+    done(null, path.join(path.dirname(__dirname), "uploads"));
   },
   /*
   
-  filename
-  will 
+  
   
   */
-  filename: function (req, file, cb) {
-    cb(null, shortid.generate() + "-" + file.originalname);
+  filename: function (req, file, done) {
+    // done(null, Date.now().toString() + "-" + file.originalname);  ROBERT
+    done(null, shortid.generate() + "-" + file.originalname);
+    /*
+  
+The short id here below focus into giving a productPicture ...
+***   done(null, shortid.generate() + "-" + file.originalname);  ****
+ giving a productPicture ... an unique id + the original file name 
+ of the picture, thats why in the result you have this:
+         "productPictures": [
+            {
+                "_id": "5faf849a4c5ac15739fbbe49",
+                "img": "1605338266328-vvb41.jpg"
+            },
+            {
+                "_id": "5faf849a4c5ac15739fbbe4a",
+                "img": "1605338266330-tumblr_olgr2rdm7R1qln4yro1_640.jpg"
+            },
+            {
+                "_id": "5faf849a4c5ac15739fbbe4b",
+                "img": "1605338266330-tumblr_olgr2rdm7R1qln4yro1_640.jpg"
+            }
+        ],
+  */
   },
 });
 
