@@ -1432,3 +1432,109 @@ exports.createProduct = (req, res) => {
 ```
 
 [<img src="../img/product1creation.jpg">]()
+
+<br>
+<br>
+<br>
+
+#### MONGO PRODUCT ERROR
+
+- If you get this ERROR , its because you have this product record inside the database.
+
+```javascript
+{
+    "error": {
+        "driver": true,
+        "name": "MongoError",
+        "index": 0,
+        "code": 11000,
+        "keyPattern": {
+            "slug": 1
+        },
+        "keyValue": {
+            "slug": "Monstera-Deliciosa"
+        }
+    }
+}
+```
+
+###### TO SOLVE IT:
+
+- GO TO MONGO
+- CHECK THE PRODUCTS
+- DELETE THE SIMILAR PRODUCT OR CHANGE THE PRODUCTS NAME WHEN YOU ARE CREATING THE PRODUCT.
+
+<br>
+<br>
+<br>
+
+<br>
+
+#### WE STILL NEED TO ADD FEW THINGS (to the schema)
+
+- ADD THE FOLLOWING inside the products schema
+
+```javascript
+required: true,
+```
+
+- TO THE the following fields, like so:
+
+```javascript
+  category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+```
+
+#### AFTER ADDING THE FIELDS , TEST IT AGAIN IN POSTMAN
+
+- YOU WILL GET THIS ERROR
+
+```javascript
+{
+    "error": {
+        "errors": {
+            "category": {
+                "name": "ValidatorError",
+                "message": "Path `category` is required.",
+                "properties": {
+                    "message": "Path `category` is required.",
+                    "type": "required",
+                    "path": "category"
+                },
+                "kind": "required",
+                "path": "category"
+            }
+        },
+        "_message": "Product validation failed",
+        "message": "Product validation failed: category: Path `category` is required."
+    }
+}
+```
+
+##### THE ERROR SAYS:
+
+> "message": "Path `category` is required.",
+
+#### GO TO POSTMAN
+
+- INSIDE THE : localhost:8000/api/category/getcategory
+
+- COPY THE PRODUCT ID inside the category of the product
+
+[<img src="../img/category_id-to-use-inside-category.jpg">]()
+
+#### AFTERWARDS
+
+- PAST THE ID inside the: localhost:8000/api/product/create
+
+- CREATE THE CATEGORY LIKE SO:
+
+[<img src="../img/adding-category-to-product-pictures.gif">]()

@@ -126,6 +126,42 @@ body-parser deprecated undefined extended: provide extended option node_modules/
 
 <br>
 <br>
+<hr>
+<br>
+<br>
+<br>
+
+### 4
+
+#### MONGO PRODUCT ERROR
+
+- If you get this ERROR , its because you have this product record inside the database.
+
+```javascript
+{
+    "error": {
+        "driver": true,
+        "name": "MongoError",
+        "index": 0,
+        "code": 11000,
+        "keyPattern": {
+            "slug": 1
+        },
+        "keyValue": {
+            "slug": "Monstera-Deliciosa"
+        }
+    }
+}
+```
+
+###### TO SOLVE IT:
+
+- GO TO MONGO
+- CHECK THE PRODUCTS
+- DELETE THE SIMILAR PRODUCT OR CHANGE THE PRODUCTS NAME WHEN YOU ARE CREATING THE PRODUCT.
+
+<br>
+<br>
 <br>
 
 # COMMON QUESTIONS 🌻
@@ -144,19 +180,19 @@ What is Postman? Postman is a popular API client that makes it easy for develope
 
 <br>
 
- <p> body-parser extract the entire body portion of an incoming request 
-stream and exposes it on req. body . The middleware was a part of Express. 
+ <p> body-parser extract the entire body portion of an incoming request
+stream and exposes it on req. body . The middleware was a part of Express.
 js earlier but now you have to install it separately. This body-parser module parses
  the JSON, buffer, string and URL encoded data submitted using HTTP POST request.
 </p>
 
  </p>
- 
+
 <p>
-middleware: its the processor of the information 
+middleware: its the processor of the information
 you get for the ouside and the inside
-// like when a user send a post request , 
-the middleware will check the data of the user 
+// like when a user send a post request ,
+the middleware will check the data of the user
 and send a response depending on that.
 </p>
 
@@ -214,3 +250,4 @@ it should potentially be a model of its own.
 <br>
 <hr>
 <br>
+```

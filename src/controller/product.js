@@ -43,7 +43,8 @@ exports.createProduct = (req, res) => {
   }
 
   // 2 ------------------
-  //  Here we are translating what was send to me in step 1, to database DOCument
+  // after that, we CONSTRUCT the product DOCUMENT: const product = new Product({
+  //  we are basically translating what was send to me in step 1, to database DOCument
   const product = new Product({
     name: name,
     slug: slugify(name),
