@@ -50,19 +50,31 @@ exports.signin = (req, res) => {
 
 ```
 
-##### IN THE ADMIN we already have it
+<br>
+
+#### IN THE ADMIN we already have this information stored, so dont bother!
 
 <br>
 <br>
 <br>
 
-### THE SHOPPING-CART :shopping_cart:
+## THE SHOPPING-CART :shopping_cart:
 
-- GO TO THE MODELS folder
-- CREATE THE SCHEMA for the CART
-- COPY the MODELS category.js
-- PASTE IT in the cart.js/models
-- REMOVE MOST OF THE STUFF and live it like so:
+<br>
+
+- CREATE THE SCHEMA
+- CREATE THE ROUTES
+- CREATE THE CONTROLLERS
+
+<br>
+
+##### CREATE THE SCHEMA
+
+- - GO TO THE MODELS folder
+- - CREATE THE SCHEMA for the CART
+- - COPY the MODELS category.js
+- - PASTE IT in the cart.js/models
+- - REMOVE MOST OF THE STUFF and live it like so:
 
 ```javascript
 const mongoose = require("mongoose");
@@ -74,15 +86,104 @@ const mongoose = require("mongoose");
 // -----------------------------------------
 //
 
-const cartSchema = new mongoose.Schema({
-
-
-
-
-    
-}, { timestamps: true });
+const cartSchema = new mongoose.Schema({}, { timestamps: true });
 
 module.exports = mongoose.model("Cart", cartSchema);
 // DONT FORGET to change the name of the collection:
 //  from this : "Category" to "Cart"
+```
+
+<br><br>
+
+#### NOW IMPORT THE USER AND PRODUCT SCHEMAS
+
+- MAKE THE CONNECTION OR REF to link these 2 schemas to the CART.js
+
+<br>
+
+```javascript
+const mongoose = require("mongoose");
+//
+// -----------------------------------------
+//
+//              CART SCHEMA
+//
+// -----------------------------------------
+//
+
+const cartSchema = new mongoose.Schema(
+  {
+    // 1 import the user schema to make the reference
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    // so 1 user can buy serveral products, thats why you add the array
+    cartItems: [
+      {
+        // 1 import the product schema to make the reference
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+          required: true,
+        },
+        quantity: { type: Number, default: 1 },
+        // the default product is 1, so the basket cannot be empty
+        price: { type: Number, required: true },
+        // this is in case the price might vary in the future.
+      },
+    ],
+  },
+  { timestamps: true }
+);
+
+module.exports = mongoose.model("Cart", cartSchema);
+```
+
+<br><br>
+
+##### CREATE THE cart.js/ROUTES
+
+- - GO TO THE ROUTES category.js
+- - COPY THE category.js
+- - COPY the MODELS category.js
+- - PASTE IT in the cart.js/models
+- - CREATE THE CONTROLLER/cart.js
+- - REPLACE FEW THINGS
+
+> THE NEW THINGS: will be the function called "addItemToCart"
+> this function hasn't been created yet
+
+<br>
+
+```javascript
+const express = require("express");
+//HERE we are going to import the category schema
+const { addItemToCart } = require("../controller/cart");
+const { requireSignin, userMiddleware } = require("../common-middleware/index");
+// Here we no longer need to add a adminMiddleware as normal user cannot add categories
+// BUT what the user can do, is add to cart, therefore we need to put userMiddleware
+const router = express.Router();
+//
+//
+//           ****   C  *  A  *  R  *  T    ****
+//
+//
+//
+/*router.post(
+    "/user/cart/add-to-cart",
+
+    HERE YOU CAN WRITE anything you want like for example:
+
+    /user/cart/add-to-basket
+    etc etc...
+
+    */
+router.post(
+  "/user/cart/addtocart",
+  requireSignin,
+  userMiddleware,
+  addItemToCart
+);
+// instead of add category , the user will be able to addItemToCart);
+// router.get("/category/getcategory", getCategories);  no longer needed!!!
+
+module.exports = router;
 ```
