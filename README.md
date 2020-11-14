@@ -32,10 +32,9 @@
 
 [More about POSTMAN](src/docs/ERRORS_FAQ.md)
 
-
 > NOTE: I am repeating the project i started 2 days ago
 
- - I am not going to explain the set up of the server, as i already did inside the ecommerce1:
+- I am not going to explain the set up of the server, as i already did inside the ecommerce1:
 
 [mern-ecommerce1](https://github.com/nadiamariduena/mongo-28-dci/tree/master/personal-lessons-tutorials/mern-ecommerce1)
 
@@ -151,7 +150,7 @@ _THE ADMIN WILL HAVE PRIVILEGES SUCH AS CREATING CATEGORIES AND SUBCATEGORIES FO
 
 ##### CLICK ON THE LINK to unfold the description
 
-[ADMIN CATEGORY PROCESS](src/docs/ADMIN_CATEGORY.md)
+[ADMIN CATEGORY PROCESS](src/docs/ADDPRODUCT_TO_CART.md)
 
 <br>
 <hr>
@@ -172,3 +171,13 @@ _THE ADMIN WILL HAVE PRIVILEGES SUCH AS CREATING CATEGORIES AND SUBCATEGORIES FO
 #### CLICK ON THE LINK to unfold the description
 
 [PRODUCTS PROCESS](src/docs/PRODUCTS.md)
+
+<br>
+<hr>
+<br>
+
+## ADD PRODUCTS TO CART 🛒 :lipstick:
+
+#### CLICK ON THE LINK to unfold the description
+
+[PRODUCTS PROCESS](src/docs/ADDPRODUCT_TO_CART.md)
