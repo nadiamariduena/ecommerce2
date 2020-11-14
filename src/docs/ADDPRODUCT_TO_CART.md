@@ -187,3 +187,148 @@ router.post(
 
 module.exports = router;
 ```
+
+<br>
+<br>
+
+#### NOW GO TO THE CONTROLLERS/cart.js
+
+- ADD THE FOLLOWING
+
+- - IMPORT THE MODELS SCHEMA
+
+<br>
+
+```javascript
+const Cart = require("../models/cart");
+//
+//
+//                           ****   C  *  A  *  R  *  T    ****
+//
+// ----------------------
+// A D D  item to CART
+// ----------------------
+//
+exports.addItemToCart = (req, res) => {
+  res.json({ message: "hello cart" });
+};
+```
+
+<br>
+<br>
+
+#### NOW ADD THE cart.js/ROUTES to the INDEX.SERVER.JS file
+
+```javascript
+//
+//---------------------
+//  IMPORT the ROUTES
+//---------------------
+//
+// cart
+const cartRoutes = require("./routes/cart");
+//
+//
+//
+//---------------------
+//   USE the ROUTES
+//---------------------
+
+//    C A R T .. ROUTES
+app.use("/api", cartRoutes);
+//
+//
+```
+
+<br>
+<br>
+
+#### CHECK IF ALL IS OKAY IN THE SERVER THEN TEST IT ON POSTMAN
+
+##### BEFORE testing the cart route
+
+- CREATE A NEW user (no admin)
+
+- TYPE THE FOLLOWING URL:
+
+`localhost:8000/api/signup`
+
+- SIGN UP THE FOLLOWING DATA:
+
+```javascript
+{
+     "firstName": "Cherubin",
+    "lastName": "Ellon",
+    "email": "cherubin@domain.com",
+    "password": "enolagay"
+}
+//
+// result
+//
+{
+    "message": "User created Successfully"
+}
+```
+
+##### NOW SIGNIN AND COPY THE TOKEN
+
+- TYPE THE FOLLOWING URL:
+
+`localhost:8000/api/signin`
+
+```javascript
+{
+
+    "email": "cherubin@domain.com",
+    "password": "enolagay"
+}
+//
+// result
+//
+
+{
+    "token": "ETCTEC here IS WHERE THE TOKEN GOES",
+    "user": {
+        "_id": "5faffd16f9b3423b98f6b8d2",
+        "firstName": "Cherubin",
+        "lastName": "Ellon",
+        "email": "cherubin@domain.com",
+        "role": "user",
+        "fullName": "Cherubin, Ellon"
+    }
+}
+
+```
+
+<br>
+
+##### NOW YOU ARE READY TO TEST THE CART ROUTES
+
+- ADD A NEW TAB
+
+- TYPE THE FOLLOWING URL:
+
+`localhost:8000/api/user/cart/addtocart`
+
+- CREATE A HEADER "authorization" then add the Bearer and the token code
+
+- ADD THE FOLLOWING:
+
+```javascript
+{
+    "email": "cherubin@domain.com",
+    "password": "enolagay1225"
+}
+```
+
+> for this to work, you have to be logged in, ALSO check the url is like
+> it should be!!
+
+- SEND POST request
+
+```javascript
+// RESULT
+{
+    "message": "COWABUNGA TURTLE cart"
+}
+```

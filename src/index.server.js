@@ -18,7 +18,8 @@ const categoryRoutes = require("./routes/category");
 // product
 const productRoutes = require("./routes/product");
 //
-//
+// cart
+const cartRoutes = require("./routes/cart");
 //
 //
 //
@@ -75,6 +76,8 @@ app.use("/api", adminRoutes);
 app.use("/api", categoryRoutes);
 //    P R O D U C T .. ROUTES
 app.use("/api", productRoutes);
+//    C A R T .. ROUTES
+app.use("/api", cartRoutes);
 //
 //
 //
