@@ -267,6 +267,7 @@ app.use("/api", cartRoutes);
     "message": "User created Successfully"
 }
 ```
+
 <br>
 
 ##### NOW SIGNIN AND COPY THE TOKEN
@@ -286,7 +287,7 @@ app.use("/api", cartRoutes);
 //
 
 {
-    "token": "ETCTEC here IS WHERE THE TOKEN GOES",
+    "token": "ETC..ETC here IS WHERE THE TOKEN GOES",
     "user": {
         "_id": "5faffd16f9b3423b98f6b8d2",
         "firstName": "Cherubin",
@@ -298,6 +299,7 @@ app.use("/api", cartRoutes);
 }
 
 ```
+
 <br>
 <br>
 
@@ -331,3 +333,67 @@ app.use("/api", cartRoutes);
     "message": "COWABUNGA TURTLE cart"
 }
 ```
+
+<br>
+<br><br>
+<br>
+
+#### AFTER THE TEST, GO BACK TO THE CONTROLLER/cart.js
+
+- hide this:
+
+`res.json({ message: "COWABUNGA TURTLE cart" });`
+
+- It should look like this
+
+```javascript
+const Cart = require("../models/cart");
+//
+//
+//                           ****   C  *  A  *  R  *  T    ****
+//
+//
+//
+// ----------------------
+// A D D  item to CART
+// ----------------------
+//
+exports.addItemToCart = (req, res) => {
+  //   res.json({ message: "COWABUNGA TURTLE cart" });
+
+  const cart = new Cart({
+    //   HERE BELOW: we are getting the user ID
+    user: req.user._id,
+    //
+    cartItems: req.body.cartItems,
+       /* HERE ABOVE: we are getting the usER CART(which is in cart.js/models), 
+    you have the carItems array that contains a few things.
+    */
+  });
+
+  //
+  //
+  //
+
+  // ------------------
+  // now SAVE the steps and HANDLE the ERRORS
+
+  cart.save((error, cart) => {
+    //
+    // ERROR HANDLING
+    // if there is an error, return a response 400 with a message json that says "error"
+    if (error) return res.status(400).json({ error });
+    // if the saving was successful, show the cart
+    if (cart) {
+      // if it s succesful, save the record
+      //   and return the cart
+      res.status(201).json({ cart });
+    }
+  });
+};
+```
+
+<br>
+<br>
+
+#### NOW GO TO POSTMAN and test it
