@@ -1,12 +1,10 @@
-## A D M I N - C A T E G O R Y  :closed_lock_with_key:
-
-
+## A D M I N - C A T E G O R Y :closed_lock_with_key:
 
 ##### CREATE THE AUTHENTICATION (only logged in users"admin") CAN CREATE A CATEGORY
 
 <br>
 
-*ONLY THE ADMIN HAVE SOME PERMISSION TO WRITE THE CATEGORIES*
+_ONLY THE ADMIN HAVE SOME PERMISSION TO WRITE THE CATEGORIES_
 
 - GO TO THE COMMON-MIDDLEWARE
 
@@ -186,7 +184,7 @@ return res.status(400).json({ message: "Authorization Required" });
 
 #### NOW TEST IT in POSTMAN
 
-![rested](./src/img/Authorization_required_admin_categories.jpg)
+![rested](../img/Authorization_required_admin_categories.jpg)
 
 - IF YOU DELETED THE ADMIN USER OR FORGOT THE PASSWORD, you will have to create another ADMIN USER
 
@@ -231,7 +229,7 @@ localhost: 8000 / api / admin / signup;
 
 - IF a message with "required" shows, sign in again and get the new token
 
-![rested](./src/img/error_jwt_token_admin_category.gif)
+![rested](../img/error_jwt_token_admin_category.gif)
 
 ###### THERE IS GOING TO be an error linked to the JWT "required"
 
@@ -349,6 +347,7 @@ exports.userMiddleware = (req, res, next) => {
 <br>
 
 ##### Both together should look like so:
+
 <br>
 
 ```javascript
