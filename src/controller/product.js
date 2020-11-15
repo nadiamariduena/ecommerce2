@@ -1,6 +1,7 @@
 const shortid = require("shortid");
 const Product = require("../models/product");
 const slugify = require("slugify");
+
 //
 //                        ****  P R O D U C T     ****
 //                               controller
@@ -11,7 +12,7 @@ const slugify = require("slugify");
 exports.createProduct = (req, res) => {
   // the line below will help in the validation
   // 1   ------------------
-  const { name, price, quantity, description, category, createdBy } = req.body;
+  const { name, price, description, category, quantity, createdBy } = req.body;
 
   // 5 remove the productPictures from the step 1
   // 6 add it here

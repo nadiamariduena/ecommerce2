@@ -250,4 +250,35 @@ it should potentially be a model of its own.
 <br>
 <hr>
 <br>
+
+## THE DOLLAR symbol 💲 ???
+
+<br>
+
+##### WHY DO YOU USE THE DOLLAR symbol like so:
+
+```javascript
+//UPDATE the cart
+Cart.findOneAndUpdate(
+  { user: req.user._id },
+  {
+    //   Cart.findOneAndUpdate(); will find the cart from the user._id and update it
+    //  to test if you can push an update write the following:
+    $push: {
+      cartItems: req.body.cartItems,
+    },
+  } //------- without this below, you cannot see the result in postman
+).exec;
 ```
+
+<br>
+
+##### \$ (update)
+
+- The positional \$ operator identifies an element in an array to update without explicitly specifying the position of the element in the array.
+
+  > https://docs.mongodb.com/manual/reference/operator/update/positional/
+
+- According to the docs, a "\$" is reserved for operators. If you look at the group operator however, values need to have a dollar prefixed. These values are not operators. What does it mean in this context then? Example below:
+
+> https://stackoverflow.com/questions/16264647/what-does-a-dollar-sign-mean-in-mongodb-in-terms-of-groups/16266807

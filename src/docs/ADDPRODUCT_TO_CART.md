@@ -424,3 +424,152 @@ exports.addItemToCart = (req, res) => {
 <br>
 
 ###### SINCE THE CODE IS GOING TO CHANGE, I AM GOING TO CONTINUE AND FIGURE IT OUT LATER.
+
+<br>
+<br>
+<br>
+
+#### After testing it, you can notice that the product has been recorded in MONGO, but it has been recorded several times forthe same user.
+
+[<img src="../img/2user-results.jpg">]()
+
+> THE ONLY issue with that, is that the product has been recorded twice like if it was for to different users, first of all we only need to have 1 cart for 1 user in which he can add MULTIPLE products.
+
+#### TO RESTRICT THIS PROBLEM
+
+- YOU HAVE TO WRITE A CONDITION
+
+- READ THE COMMENTS
+
+```javascript
+const Cart = require("../models/cart");
+//
+//
+//                           ****   C  *  A  *  R  *  T    ****
+//
+//
+//
+// ----------------------
+// A D D  item to CART
+// ----------------------
+//
+exports.addItemToCart = (req, res) => {
+  //   res.json({ message: "COWABUNGA TURTLE cart" });
+
+  // Cart.find   will check if the "user ID" already
+  // exist, this means the cart is already created for the user and
+  // there s no need to add a new cart
+  Cart.findOne({ user: req.user._id }).exec((error, cart) => {
+    if (error) return res.status(400).json({ error });
+    if (cart) {
+      //                 IF CART ALREADY EXISTS then update the cart by quantity
+      //UPDATE the cart
+      Cart.findOneAndUpdate(
+        { user: req.user._id },
+        {
+          //   Cart.findOneAndUpdate(); will find the cart from the user._id and update it
+          //  to test if you can push an update write the following:
+          $push: {
+            cartItems: req.body.cartItems,
+          },
+        } //------- without this below, you cannot see the result in postman
+      ).exec((error, _cart) => {
+        if (error) return res.status(400).json({ error });
+        if (_cart) {
+          return res.status(201).json({ cart: _cart });
+        }
+      }); //--------
+      //
+      //
+      // just for now write the following
+      //   res.status(200).json({ message: cart });
+    } else {
+      //                 IF THE CART DONT EXISTS then create a new cart
+      //
+      // here you create the NEW CART
+      const cart = new Cart({
+        user: req.user._id,
+        cartItems: [req.body.cartItems],
+      });
+      // ------------------
+      // now SAVE
+      // ------------------
+      cart.save((error, cart) => {
+        if (error) return res.status(400).json({ error });
+        if (cart) {
+          return res.status(201).json({ cart });
+        }
+      });
+    }
+  });
+};
+```
+
+### IMPORTANT !!! :construction:
+
+- SINCE WE REMOVED THE ARRAY from the postman(where you type on raw)
+
+```javascript
+// before
+[
+ {
+	"cartItems": {
+   		"product": "5fafaa8a68a590754956e890",
+   		"quantity": 1,
+   		"price": 50
+   	}
+}
+]
+// after
+{
+	"cartItems": {
+   		"product": "5fafaa8a68a590754956e890",
+   		"quantity": 1,
+   		"price": 50
+   	}
+}
+```
+
+<br>
+
+- YOU NOW MUST TO ADD THE SQUARE BRAQUETS (array ) here:
+
+```javascript
+// cart.js/controllers
+    } else {
+      //                 IF THE CART DON'T EXISTS then create a new cart
+      //
+      // here you create the new cart
+      const cart = new Cart({
+        user: req.user._id,
+        cartItems: [req.body.cartItems],
+      });
+```
+
+## THE DOLLAR symbol 💲 ???
+
+##### WHY DO YOU USE THE DOLLAR symbol like so:
+
+```javascript
+//UPDATE the cart
+Cart.findOneAndUpdate(
+  { user: req.user._id },
+  {
+    //   Cart.findOneAndUpdate(); will find the cart from the user._id and update it
+    //  to test if you can push an update write the following:
+    $push: {
+      cartItems: req.body.cartItems,
+    },
+  } //------- without this below, you cannot see the result in postman
+).exec;
+```
+
+##### \$ (update)
+
+- The positional \$ operator identifies an element in an array to update without explicitly specifying the position of the element in the array.
+
+  > https://docs.mongodb.com/manual/reference/operator/update/positional/
+
+- According to the docs, a "\$" is reserved for operators. If you look at the group operator however, values need to have a dollar prefixed. These values are not operators. What does it mean in this context then? Example below:
+
+> https://stackoverflow.com/questions/16264647/what-does-a-dollar-sign-mean-in-mongodb-in-terms-of-groups/16266807
