@@ -1,7 +1,7 @@
 const express = require("express");
 //HERE we are going to import the category schema
 const { addItemToCart } = require("../controller/cart");
-const { requireSignin, userMiddleware } = require("../common-middleware/index");
+const { requireSignin, userMiddleware } = require("../common-middleware");
 // Here we no longer need to add a adminMiddleware as normal user cannot add categories
 // BUT what the user can do, is add to cart, therefore we need to put userMiddleware
 const router = express.Router();
@@ -10,6 +10,7 @@ const router = express.Router();
 //           ****   C  *  A  *  R  *  T    ****
 //
 //
+
 //
 /*router.post(
     "/user/cart/add-to-cart",

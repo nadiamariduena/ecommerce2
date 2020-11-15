@@ -9,21 +9,18 @@ const mongoose = require("mongoose");
 
 const cartSchema = new mongoose.Schema(
   {
-    // 1 import the user schema to make the reference
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    // so 1 user can buy serveral products, thats why you add the array
     cartItems: [
       {
-        // 1 import the product schema to make the reference
         product: {
+          // linking
           type: mongoose.Schema.Types.ObjectId,
+          // the product collection
           ref: "Product",
           required: true,
         },
-        quantity: { type: Number, default: 1 },
-        // the default product is 1, so the basket cannot be empty
+        quantity: { type: Number, default: 1, required: true },
         price: { type: Number, required: true },
-        // this is in case the price might vary in the future.
       },
     ],
   },
@@ -48,8 +45,31 @@ we could create a new end point/ new route or we use it on a existing point.
 we could add information to our list of orders and to the individual order
 
 
+-------------------------------------------
+comments
+-------------------------------------
 
-
-
+const cartSchema = new mongoose.Schema(
+  {
+    // 1 import the user schema to make the reference
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    // so 1 user can buy serveral products, thats why you add the array
+    cartItems: [
+      {
+        // 1 import the product schema to make the reference
+        product: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Product",
+          required: true,
+        },
+        quantity: { type: Number, default: 1 },
+        // the default product is 1, so the basket cannot be empty
+        price: { type: Number, required: true },
+        // this is in case the price might vary in the future.
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
 */

@@ -366,7 +366,7 @@ exports.addItemToCart = (req, res) => {
     user: req.user._id,
     //
     cartItems: req.body.cartItems,
-       /* HERE ABOVE: we are getting the usER CART(which is in cart.js/models), 
+    /* HERE ABOVE: we are getting the usER CART(which is in cart.js/models), 
     you have the carItems array that contains a few things.
     */
   });
@@ -397,3 +397,30 @@ exports.addItemToCart = (req, res) => {
 <br>
 
 #### NOW GO TO POSTMAN and test it
+
+- CLICK ON THE IMAGE TO CHECK THE VIDEO(steps)
+
+[<img src="../img/user__additem_to_cart _ERROR.gif">](https://www.youtube.com/watch?v=xWoyfHJL6ZQ)
+
+> ERROR: Somehow i am not getting the result i expect like in the image below:
+
+[<img src="../img/res_tutorial_addtocart-real.jpg">]()
+
+> INSTEAD i am having the following result:
+
+```javascript
+{
+    "cart": {
+        "_id": "5fb0f5c8bf6f6d28c0850b24",
+        "user": "5fb0e02be930e814f00f3a4c",
+        "cartItems": [],
+        "createdAt": "2020-11-15T09:32:56.418Z",
+        "updatedAt": "2020-11-15T09:32:56.418Z",
+        "__v": 0
+    }
+}
+```
+
+<br>
+
+###### SINCE THE CODE IS GOING TO CHANGE, I AM GOING TO CONTINUE AND FIGURE IT OUT LATER.

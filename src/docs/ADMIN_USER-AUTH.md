@@ -1,5 +1,19 @@
 ## 🔒 ADMIN USER 🔑
 
+<!--
+
+ADMINS TO USE for testing purposes
+
+{
+"firstName": "cheroki",
+"lastName":  "bull",
+    "email": "cheroki@domain.com",
+    "password": "enolagay12354"
+
+}
+
+-->
+
 _THE ADMIN WILL HAVE PRIVILEGES SUCH AS CREATING CATEGORIES AND SUBCATEGORIES FOR PRODUCTS_
 
 <br>
