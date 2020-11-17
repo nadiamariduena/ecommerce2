@@ -41,7 +41,7 @@ const jwt = require("jsonwebtoken");
 // -------------------------------------------
 
 exports.requireSignin = (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
 
   //
   //

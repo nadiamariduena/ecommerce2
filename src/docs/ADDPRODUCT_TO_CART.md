@@ -601,6 +601,56 @@ Cart.findOneAndUpdate(
 
 > CHECK THE 2 IMAGES AND SEE THE DIFFERENCES
 
+## I WILL TRY THE BASIC CODE
+
+- THE BASIC CODE BEFORE WE DO THE CHANGES RELATED TO THE Cart.findOneAndUpdate(
+
+- AS IT S EASIER TO SEE THE ISSUE
+
+##### THE CODE AND THE RESULT
+
+```javascript
+const express = require("express");
+const Cart = require("../models/cart");
+
+exports.addItemToCart = (req, res) => {
+  const cart = new Cart({
+    user: req.user._id,
+    cartItems: req.body.cartItems,
+  });
+
+  // ------
+  cart.save((error, cart) => {
+    if (error) return res.status(400).json({ error });
+    if (cart) {
+      return res.status(201).json({ cart });
+    }
+  });
+};
+
+//
+// the result in postman
+{
+    "cart": {
+        "_id": "5fb3ddafcb8c4b2abcd54631",
+        "user": "5fb0e02be930e814f00f3a4c",
+        "cartItems": [
+            {
+                "quantity": 1,
+                "_id": "5fb3ddafcb8c4b2abcd54632",
+                "product": "5fb0df4ee930e814f00f3a48",
+                "price": 20
+            }
+        ],
+        "createdAt": "2020-11-17T14:26:55.417Z",
+        "updatedAt": "2020-11-17T14:26:55.417Z",
+        "__v": 0
+    }
+}
+```
+
+<br>
+
 ###### fail!!!
 
 [<img src="../img/content-type_product_issue2.jpg">]()
@@ -614,3 +664,121 @@ Cart.findOneAndUpdate(
 - here you see how the 2 products appear after sending the post request
 
 [<img src="../img/content-type_product_issue_mongo.jpg">]()
+
+<br>
+
+### NOW TEST IT WITH THE: Cart.findOneAndUpdate(
+
+- The Cart.findOneAndUpdate( is used so that the user dont create several cart when adding products, but instead we update his cart and add all the products to ONE single cart
+
+##### the code
+
+```javascript
+const express = require("express");
+const Cart = require("../models/cart");
+//
+//
+//                           ****   C  *  A  *  R  *  T    ****
+//
+//
+//
+// ----------------------
+// A D D  item to CART
+// ----------------------
+//1
+exports.addItemToCart = (req, res) => {
+  // Cart.findOne({ user: req.user._id })
+  //  this is going to check the user._id in the collection
+  // inside mongo to see if he already exists
+  // 4
+  Cart.findOne({ user: req.user._id }).exec((error, cart) => {
+    //
+    // 5
+    if (error) return res.status(400).json({ error });
+    if (cart) {
+      //                 IF CART ALREADY EXISTS then update the cart by quantity
+      //
+      //
+      //find the user with that id and then UPDATE the cart
+      // https://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate
+      //  7
+      Cart.findOneAndUpdate(
+        { user: req.user._id },
+        {
+          //  $push: is going to push the record in a sub-collection
+          $push: {
+            // here you add the name of the key
+            cartItems: req.body.cartItems,
+          },
+        } //8
+      ).exec((error, _cart) => {
+        if (error) return res.status(400).json({ error });
+        if (_cart) {
+          return res.status(201).json({ cart: _cart });
+        }
+      }); //--------
+    } else {
+      //° 6 inside the 6 you have to introduce the step 2 and 3
+      //                 IF THE CART DONT EXISTS then create a new cart
+      //
+      //2  here you create the new cart
+      const cart = new Cart({
+        user: req.user._id,
+        cartItems: [req.body.cartItems],
+      });
+      // --------
+      // now SAVE
+      // --------
+      // 3
+      cart.save((error, cart) => {
+        if (error) return res.status(400).json({ error });
+        if (cart) {
+          return res.status(201).json({ cart });
+        }
+      });
+      // -------------------
+    } // ----°
+  });
+};
+```
+
+<br>
+
+##### I NOTICED THERE WAS SOMETHING WRONG WITH THE RESULT AGAIN
+
+<p>When following the steps from the tutorial, i remember that he mentioned that once we started with the  Cart.findOne({ , we had to remove the array inside the postman, the reasons for that is that here:</p>
+
+```javascript
+Cart.findOneAndUpdate(
+  { user: req.user._id },
+  {
+    //  $push: is going to push the record in a sub-collection
+    $push: {
+      cartItems: req.body.cartItems,
+    },
+  }
+).exec;
+```
+
+<p>The reasons for that is that here you are grabbing the cartItems object, and here you grab the array , like it was in the beginning, i dont get too much why of this so i will ask one of my teachers </p>
+
+- here is where it transforms it in an array
+
+```javascript
+// here you create the new cart
+const cart = new Cart({
+  user: req.user._id,
+  cartItems: [req.body.cartItems],
+});
+// ------------------
+// now SAVE
+// ------------------
+```
+
+###### ARRAY
+
+[<img src="../img/array_noarray-product1.jpg">]()
+
+###### NO ARRAY
+
+[<img src="../img/array_noarray-product2.jpg">]()
