@@ -782,3 +782,110 @@ const cart = new Cart({
 ###### NO ARRAY
 
 [<img src="../img/array_noarray-product2.jpg">]()
+
+##### So now its working well !!!
+
+<br>
+<br>
+<br>
+
+### NEXT STEP 🌻
+
+#### WE HAVE TO CHECK "IF THE PRODUCT ALREADY EXISTS" inside the user cart , so to not add more, but instead create a single product that will update everytime the user purchase another one.
+
+<br>
+
+- WE WILL START WITH THIS:
+
+```javascript
+  if (cart) {
+      //
+      //
+      //9 IF  PRODUCT already exists in the cart, then
+      // c will stand for see, so c. is helping to see if the product already exists in the cartItems from the user
+      const isItemAdded = cart.cartItems.find((c) => c.product == req.body.cartItems.product);
+
+if(isItemAdded) {
+
+}else{
+
+}
+
+```
+
+#### INSIDE OF THE IF /ELSE of the STEP 11
+
+- we will add the step 7 and 8
+- the ones below
+
+```javascript
+//                 IF CART ALREADY EXISTS then update the cart by quantity
+//find the user with that id and then UPDATE the cart
+// https://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate
+//  7
+Cart.findOneAndUpdate(
+  { user: req.user._id },
+  {
+    //  $push: is going to push the record in a sub-collection
+    $push: {
+      // here you add the name of the key
+      cartItems: req.body.cartItems,
+    },
+  } //8
+).exec((error, _cart) => {
+  if (error) return res.status(400).json({ error });
+  if (_cart) {
+    return res.status(201).json({ cart: _cart });
+  }
+});
+```
+
+#### YOU SHOULD ADD THEM LIKE SO
+
+- INSIDE OF THE IF, you should add a copy of the 7 and 8 but we will add it later, first forcus on the ELSE
+
+```javascript
+//9                 IF  PRODUCT already exists in the cart
+// c will stand for see,
+// so c. is helping to see if the product already exists in the cartItems from the user
+const isItemAdded = cart.cartItems.find(
+  (c) => c.product == req.body.cartItems.product
+);
+// 10
+if (isItemAdded) {
+  //
+  //
+  // if product already exists / or added
+  //
+  //
+} else {
+  // add step 7 and 8 inside
+  //
+  //                 IF CART ALREADY EXISTS then update the cart by quantity
+  //find the user with that id and then UPDATE the cart
+  // https://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate
+  //  7
+  Cart.findOneAndUpdate(
+    { user: req.user._id },
+    {
+      //  $push: is going to push the record in a sub-collection
+      $push: {
+        // here you add the name of the key
+        cartItems: req.body.cartItems,
+      },
+    } //8
+  ).exec((error, _cart) => {
+    if (error) return res.status(400).json({ error });
+    if (_cart) {
+      return res.status(201).json({ cart: _cart });
+    }
+  }); //-------- Cart.findOneAndUpdate , exec related
+```
+
+#### NOW THE IF
+
+- INSIDE OF THE "if" YOU SHOOULD ADD THE FOLLOWING
+
+```javascript
+
+```

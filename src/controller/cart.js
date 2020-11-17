@@ -20,27 +20,69 @@ exports.addItemToCart = (req, res) => {
     // 5
     if (error) return res.status(400).json({ error });
     if (cart) {
-      //                 IF CART ALREADY EXISTS then update the cart by quantity
+      // 13
+      const product = req.body.cartItems.product;
+      //
+      //9                 IF  PRODUCT already exists in the cart
+      // c will stand for see,
+      // so c. is helping to see if the product already exists in the cartItems from the user
+      const item = cart.cartItems.find((c) => c.product == product);
+      //
+
       //
       //
-      //find the user with that id and then UPDATE the cart
-      // https://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate
-      //  7
-      Cart.findOneAndUpdate(
-        { user: req.user._id },
-        {
-          //  $push: is going to push the record in a sub-collection
-          $push: {
-            // here you add the name of the key
-            cartItems: req.body.cartItems,
-          },
-        }//8
-      ).exec((error, _cart) => {
-        if (error) return res.status(400).json({ error });
-        if (_cart) {
-          return res.status(201).json({ cart: _cart });
-        }
-      }); //--------
+      // 10 create the if/else
+      if (item) {
+        // 12
+        // if product already exists / or added
+        //
+        //  7 copy
+        Cart.findOneAndUpdate(
+          // cartItems.product , carItems is a property and you can select a sub property with a dot, product is the value
+          { user: req.user._id, "cartItems.product": product },
+          {
+            //  $push: is going to push the record in a sub-collection
+            $set: {
+              // instead of push add "set", set is going to update the item
+              // here you add the name of the key
+              cartItems: {
+                ...req.body.cartItems,
+                quantity: item.quantity + req.body.cartItems.quantity,
+                // the req.body.cartItems.quantity concerns whatver the quantity we have
+              },
+            },
+          } //8
+        ).exec((error, _cart) => {
+          if (error) return res.status(400).json({ error });
+          if (_cart) {
+            return res.status(201).json({ cart: _cart });
+          }
+        }); //-------- Cart.findOneAndUpdate , exec related
+        //
+      } else {
+        // 11
+        // add step 7 and 8 inside
+        //
+        //                 IF CART ALREADY EXISTS then update the cart by quantity
+        //find the user with that id and then UPDATE the cart
+        // https://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate
+        //  7 original
+        Cart.findOneAndUpdate(
+          { user: req.user._id },
+          {
+            //  $push: is going to push the record in a sub-collection
+            $push: {
+              // here you add the name of the key
+              cartItems: req.body.cartItems,
+            },
+          } //8
+        ).exec((error, _cart) => {
+          if (error) return res.status(400).json({ error });
+          if (_cart) {
+            return res.status(201).json({ cart: _cart });
+          }
+        }); //-------- Cart.findOneAndUpdate , exec related
+      } //-------- related to  (c) => c.product == req.body.cartItems.product
     } else {
       //° 6 inside the 6 you have to introduce the step 2 and 3
       //                 IF THE CART DONT EXISTS then create a new cart
