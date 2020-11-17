@@ -4,24 +4,7 @@ const env = require("dotenv");
 // const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 //
-//
-//
-//
-//---------------------
-//  IMPORT the ROUTES
-//---------------------
-//
-const authRoutes = require("./routes/auth");
-const adminRoutes = require("./routes/admin/auth");
-// categories
-const categoryRoutes = require("./routes/category");
-// product
-const productRoutes = require("./routes/product");
-//
-// cart
-const cartRoutes = require("./routes/cart");
-//
-//
+
 //
 //
 //
@@ -50,18 +33,45 @@ mongoose
 //
 //
 //
-//
-//
 //---------------------
 //   BODY PARSER
 //---------------------
+// ALWAYS add the BODY PARSER before the routes
 //
 app.use(express.json());
-// app.use(bodyParser());
+
+// app.use(
+//   bodyParser.urlencoded({
+//     extended: true,
+//   })
+// );
+
+app.use(express.urlencoded({ extended: false }));
+
 //
 //
 //
 //
+//
+//
+//---------------------
+//  IMPORT the ROUTES
+//---------------------
+//
+const authRoutes = require("./routes/auth");
+const adminRoutes = require("./routes/admin/auth");
+// categories
+const categoryRoutes = require("./routes/category");
+// product
+const productRoutes = require("./routes/product");
+//
+// cart
+const cartRoutes = require("./routes/cart");
+//
+//
+//
+//
+
 //
 //---------------------
 //   USE the ROUTES

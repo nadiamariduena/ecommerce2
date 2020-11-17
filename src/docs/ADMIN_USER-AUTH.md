@@ -11,6 +11,12 @@ ADMINS TO USE for testing purposes
     "password": "enolagay12354"
 
 }
+normal user
+{
+
+    "email": "neira@domain.com",
+    "password": "clfosddud"
+}
 
 -->
 

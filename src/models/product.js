@@ -1,8 +1,5 @@
 const mongoose = require("mongoose");
 //
-// DONT FORGET TO INSTALL and IMPORT ,
-// the "slugify" library inside the category.js/routes
-// npm install --save slugify
 //
 // -----------------------------------------
 //
@@ -54,6 +51,11 @@ const productSchema = new mongoose.Schema(
         review: String,
       },
       // So if that person needs to add a review, it needs to be logged in
+      /* 
+      Since we have already created the User and the Category and all what is related
+ to authenticate to check if its a user logged in or if the user is an admin
+ , it s much more easier.
+ */
     ],
     category: {
       type: mongoose.Schema.Types.ObjectId,
@@ -71,26 +73,3 @@ const productSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model("Product", productSchema);
-
-/*
-1 CREATE THE PRODUCT SCHEMA
-
-LIKE THIS you can link to already existent SCHEMAS
-
-     type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-
-here you grab the Schema name you use to export your schema
- ref: "User",
-
- Since we have already created the User and the Category and all what is related
- to authenticate to check if its a user logged in or if the user is an admin
- , it s much more easier.
-
-2 GO TO THE ROUTES
-- create a product.js
-- copy the category content form the routes and paste it inside the products.js/ROUTES
-- replace the data 
-
-
-*/

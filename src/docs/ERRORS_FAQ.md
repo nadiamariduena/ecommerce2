@@ -255,7 +255,7 @@ it should potentially be a model of its own.
 
 <br>
 
-##### WHY DO YOU USE THE DOLLAR symbol like so:
+##### WHY DO YOU USE THE DOLLAR symbol ?like so:
 
 ```javascript
 //UPDATE the cart

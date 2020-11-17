@@ -3,6 +3,15 @@ const mongoose = require("mongoose");
 const cartSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    // the following contains the product array
+    /*
+    With the type: ... you grab the data from the "Product",
+    thats why you dont need to require it on top
+    
+    type: mongoose.Schema.Types.ObjectId,
+          ref: "Product"
+    
+    */
     cartItems: [
       {
         product: {

@@ -13,12 +13,6 @@ const router = express.Router();
 const shortid = require("shortid");
 const path = require("path");
 //
-
-//
-//
-//
-
-//
 //
 //                        ****  P R O D U C T     ****
 //                               routes
@@ -32,20 +26,28 @@ const path = require("path");
 // stands for callback, as it helps me to differentiate it better when a function is actually "done"
 //
 // So done is the call back function, like the "done" in roberts example from yesterdays lesson
+//
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(path.dirname(__dirname), "uploads"));
+  },
+  //
+  //
+  filename: function (req, file, cb) {
+    cb(null, shortid.generate() + "-" + file.originalname);
+  },
+});
+/*
+
+ROBERT VERSION
+
+
 const storage = multer.diskStorage({
   destination: function (req, file, done) {
     done(null, path.join(path.dirname(__dirname), "uploads"));
   },
-  /*
-  
-  
-  
-  */
-  filename: function (req, file, done) {
-    // done(null, Date.now().toString() + "-" + file.originalname);  ROBERT
-    done(null, shortid.generate() + "-" + file.originalname);
-    /*
-  
+
 The short id here below focus into giving a productPicture ...
 ***   done(null, shortid.generate() + "-" + file.originalname);  ****
  giving a productPicture ... an unique id + the original file name 
@@ -64,10 +66,11 @@ The short id here below focus into giving a productPicture ...
                 "img": "1605338266330-tumblr_olgr2rdm7R1qln4yro1_640.jpg"
             }
         ],
-  */
-  },
-});
 
+
+
+
+*/
 // multer middleware **
 // const upload = multer({ dest: "uploads/" });
 const upload = multer({ storage });
@@ -76,19 +79,14 @@ const upload = multer({ storage });
 // if you have multiple images of 1 product, you use array.
 // upload.array("product_images")
 //
-
 /*
- where does multer "upload" the FILE INFORMATION?
- for a single file:
- file: req.file,
-
+where does multer "upload" the FILE INFORMATION?
+for a single file:
+file: req.file,
 - single image
 upload.single("productPicture"),
-
 - multiple images
 upload.array("productPicture"),
-
-
 */
 //
 // change the ROUTE name for this , instead of category, add product
@@ -101,8 +99,3 @@ router.post(
 );
 
 module.exports = router;
-
-/*
-
-
-*/

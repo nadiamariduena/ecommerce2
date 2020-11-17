@@ -573,3 +573,44 @@ Cart.findOneAndUpdate(
 - According to the docs, a "\$" is reserved for operators. If you look at the group operator however, values need to have a dollar prefixed. These values are not operators. What does it mean in this context then? Example below:
 
 > https://stackoverflow.com/questions/16264647/what-does-a-dollar-sign-mean-in-mongodb-in-terms-of-groups/16266807
+
+<br>
+<br>
+
+## BACK TO THE ISSUE
+
+##### AFTER SPENDING FEW HOURS TO UNDERSTAND WHY I WASNT GETTING THIS RESULT LIKE IN THE IMAGE:
+
+- CLICK ON THE IMAGE TO CHECK THE VIDEO(steps)
+
+[<img src="../img/content-type_product_issue2.jpg">](https://youtu.be/eO-W24gyDfA)
+<br>
+
+##### I DECIDED TO ASK FOR HELP :crab:
+
+<p> One of my teachers made some tests, but ad the end told me to repeat the "product" and the "cart" steps, which i did, but with no success as the issue persisted </p>
+
+##### THEN I ASKED MY OTHER TEACHER
+
+<p> He Told me to do some tests with the req.body but it didnt work, then to check express version, after that he told me to check the body parser, he wanted to see if i had one, as sometimes people forget to add it and it causes a lot of trouble, but i had it, anyway he asked me to add other body parsers, and the code still didnt work, he told me then to change the position of the body parser as it has to be above the routers(also a cause for a lot of issues) at the end he asked me to check the postman, and there was the problem </p>
+
+<br>
+<br>
+
+### THE PROBLEM WAS DUE TO POSTMAN
+
+> CHECK THE 2 IMAGES AND SEE THE DIFFERENCES
+
+###### fail!!!
+
+[<img src="../img/content-type_product_issue2.jpg">]()
+
+###### success!!!
+
+[<img src="../img/content-type_product_issue1.jpg">]()
+
+###### MONGO RESULT
+
+- here you see how the 2 products appear after sending the post request
+
+[<img src="../img/content-type_product_issue_mongo.jpg">]()

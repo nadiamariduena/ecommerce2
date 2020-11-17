@@ -10,6 +10,7 @@
 // -------------------------------------------
 
 exports.requireSignin = (req, res, next) => {
+  // will request  the Authorization inside the header for any role permission related, like creating categories for example
   const token = req.headers.authorization.split(" ")[1];
   // [1] is going to grab the token from the words "Bearer token"
   const user = jwt.verify(token, process.env.JWT_SECRET);
@@ -40,6 +41,8 @@ const jwt = require("jsonwebtoken");
 // -------------------------------------------
 
 exports.requireSignin = (req, res, next) => {
+  console.log(req.body);
+
   //
   //
   // if this exists and its not undefined: if (req.headers.authorization)
