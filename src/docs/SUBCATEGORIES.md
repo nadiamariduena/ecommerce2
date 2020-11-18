@@ -101,3 +101,15 @@ PUSHING THE SUBCATEGORY OBJECT TO THE CATEGORY
     ]
 }
 ```
+
+<br>
+<hr>
+<br>
+
+# NEXT
+
+### PRODUCTS :shopping:
+
+#### CLICK ON THE LINK to unfold the description
+
+[PRODUCTS PROCESS](src/docs/PRODUCTS.md)

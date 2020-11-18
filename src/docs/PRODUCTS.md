@@ -1588,3 +1588,5 @@ required: true,
 <br>
 
 ##### HOW TO FETCH THE PRODUCTS
+
+[PRODUCTS PROCESS](src/docs/ADDPRODUCT_TO_CART.md)
