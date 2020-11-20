@@ -921,8 +921,8 @@ if (isItemAdded) {
 
 - HERE IS DIDNT ADD THE const product, you will find it below in the next code
 
-> I USED PUSH TO push the item inside the cart
-> I USED set to update the item inside the cart, so to not repeat the same product several times.
+> I USED "PUSH" TO push the item inside the cart
+> I USED "set" to update the item inside the cart, so to not repeat the same product several times.
 
 ### CHECK THE STEPS
 
@@ -1047,3 +1047,17 @@ exports.addItemToCart = (req, res) => {
 ```
 
 [<img src="../img/RESULT_additemtocart.gif">]()
+
+<br>
+<br>
+<br>
+
+## THE CODE WORKS but ... :cherries:
+
+### THERE IS A BUG when adding the items to cart
+
+- _THE ISSUE_
+
+> START BY DELETING THE CART
+
+> when you delete the cart for example and then you add again a product, you will see for example 3 products of the same, until then everything is fine! but once you choose to add another product (3 to 4 more) with another id code, you will notice that the first product disappeared, that is what we are going to solve now-
