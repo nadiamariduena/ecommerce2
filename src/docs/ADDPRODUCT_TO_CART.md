@@ -1060,4 +1060,10 @@ exports.addItemToCart = (req, res) => {
 
 > START BY DELETING THE CART
 
-> when you delete the cart for example and then you add again a product, you will see for example 3 products of the same, until then everything is fine! but once you choose to add another product (3 to 4 more) with another id code, you will notice that the first product disappeared, that is what we are going to solve now-
+> when you delete the cart for example and then you add again a product, you will see for example 3 products of the same, until then everything is fine! but once you choose to add another product (3 to 4 more) with another id code, you will notice that the first product disappeared, that is what we are going to solve now
+
+<br>
+
+##### Click on the image to see what i meant
+
+[<img src="../img/bug_addingproducttocart.gif">](https://www.youtube.com/watch?v=WbMXNHaDNsY)
